@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CutPro">
+<title>CutPro – 15 Week Cut</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fdf8f5;
+  --bg2:#f9f2ed;
+  --surface:#ffffff;
+  --surface2:#fdf6f2;
+  --surface3:#f5ede8;
+  --border:#e8d8d0;
+  --border2:#f0e4de;
+  --accent:#c97b84;
+  --accent-light:#f2c5cb;
+  --accent2:#d4956a;
+  --accent3:#8fa8a0;
+  --accent4:#b89bbf;
+  --text:#2d1f1a;
+  --text2:#8a6d66;
+  --text3:#b89e99;
+  --success:#7ab89a;
+  --warning:#d4956a;
+  --danger:#c97b84;
+  --gold:#c9a96e;
+  --fd:'Cormorant Garamond',serif;
+  --fb:'Jost',sans-serif;
+  --fm:'DM Mono',monospace;
+  --r:18px;--rs:12px;
+  --shadow:0 4px 24px rgba(180,120,110,.08);
+  --shadow-lg:0 8px 40px rgba(180,120,110,.13);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--fb);
+  font-weight:300;
+  min-height:100vh;
+  overflow-x:hidden;
+  padding-bottom:90px;
+}
+
+/* DELICATE BACKGROUND */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 90% 5%, rgba(201,123,132,.07) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 5% 90%, rgba(184,155,191,.06) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 40% at 50% 50%, rgba(212,149,106,.03) 0%, transparent 70%);
+  pointer-events:none;z-index:0;
+}
+
+/* FLOATING PETAL DECO */
+body::after{
+  content:'✿';
+  position:fixed;top:20px;right:16px;
+  font-size:48px;opacity:.06;
+  pointer-events:none;z-index:0;
+  animation:spin 20s linear infinite;
+}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* NAV */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(253,248,245,.92);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border2);
+  padding:0 16px;
+}
+.nav-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none;padding:12px 0;}
+.nav-inner::-webkit-scrollbar{display:none;}
+.nav-logo{
+  font-family:var(--fd);font-size:22px;font-style:italic;font-weight:400;
+  color:var(--accent);letter-spacing:2px;white-space:nowrap;margin-right:14px;
+}
+.nav-btn{
+  background:none;border:1px solid transparent;
+  color:var(--text2);font-family:var(--fb);font-size:11px;font-weight:500;
+  padding:5px 13px;border-radius:20px;cursor:pointer;white-space:nowrap;
+  transition:all .25s;letter-spacing:.3px;
+}
+.nav-btn:hover{color:var(--text);background:var(--surface3);border-color:var(--border);}
+.nav-btn.active{
+  color:white;
+  background:linear-gradient(135deg,var(--accent),var(--accent4));
+  border-color:transparent;
+  box-shadow:0 3px 12px rgba(201,123,132,.35);
+}
+
+/* MAIN */
+main{max-width:900px;margin:0 auto;padding:22px 16px 70px;position:relative;z-index:1;}
+.page{display:none;}
+.page.active{display:block;animation:fadeUp .3s cubic-bezier(.16,1,.3,1);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* CARDS */
+.card{
+  background:var(--surface);
+  border:1px solid var(--border2);
+  border-radius:var(--r);
+  padding:20px;margin-bottom:14px;
+  box-shadow:var(--shadow);
+  transition:box-shadow .2s;
+}
+.card:hover{box-shadow:var(--shadow-lg);}
+.card-title{
+  font-family:var(--fd);font-size:18px;font-weight:400;font-style:italic;
+  letter-spacing:.5px;color:var(--text);
+  margin-bottom:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+.card-title span{color:var(--text3);font-size:12px;font-family:var(--fb);font-weight:300;font-style:normal;}
+
+/* HERO */
+.hero-bar{
+  background:linear-gradient(135deg,rgba(255,255,255,.95) 0%,rgba(253,242,238,.9) 100%);
+  border:1px solid var(--border2);border-radius:24px;
+  padding:24px 22px;margin-bottom:16px;
+  display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;
+  box-shadow:var(--shadow-lg);
+  position:relative;overflow:hidden;
+}
+.hero-bar::before{
+  content:'❀';position:absolute;right:80px;top:-10px;
+  font-size:80px;opacity:.05;pointer-events:none;
+}
+.hero-title{
+  font-family:var(--fd);font-size:clamp(28px,7vw,52px);
+  font-weight:300;font-style:italic;
+  letter-spacing:1px;line-height:1;
+  color:var(--accent);
+}
+.hero-sub{font-size:12px;color:var(--text2);margin-top:6px;font-weight:300;letter-spacing:.3px;}
+.week-badge{
+  background:linear-gradient(135deg,var(--accent),var(--accent4));
+  color:white;font-family:var(--fd);font-size:36px;font-style:italic;
+  letter-spacing:1px;padding:12px 20px;border-radius:16px;
+  text-align:center;line-height:1;
+  box-shadow:0 6px 20px rgba(201,123,132,.3);
+}
+.week-badge small{display:block;font-size:10px;font-family:var(--fb);font-weight:500;font-style:normal;opacity:.85;margin-top:2px;}
+
+/* STATS */
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;}
+@media(min-width:560px){.stat-grid{grid-template-columns:repeat(4,1fr);}}
+.stat{
+  background:var(--surface);border:1px solid var(--border2);
+  border-radius:var(--r);padding:16px 12px;text-align:center;
+  box-shadow:var(--shadow);
+  position:relative;overflow:hidden;
+}
+.stat::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--accent-light),var(--accent4));
+  opacity:.4;
+}
+.stat-val{font-family:var(--fd);font-size:28px;letter-spacing:1px;line-height:1;font-style:italic;}
+.stat-val.green{color:var(--success);}
+.stat-val.yellow{color:var(--accent);}
+.stat-val.orange{color:var(--accent2);}
+.stat-val.blue{color:var(--accent3);}
+.stat-label{font-size:9px;color:var(--text3);margin-top:4px;text-transform:uppercase;letter-spacing:1px;font-weight:500;}
+
+/* ADVICE */
+.advice-box{border-radius:var(--r);padding:14px 18px;margin-bottom:14px;display:flex;align-items:flex-start;gap:12px;border:1px solid;}
+.advice-box.good{background:rgba(122,184,154,.07);border-color:rgba(122,184,154,.25);}
+.advice-box.warn{background:rgba(212,149,106,.07);border-color:rgba(212,149,106,.25);}
+.advice-box.danger{background:rgba(201,123,132,.07);border-color:rgba(201,123,132,.25);}
+.advice-box.info{background:rgba(143,168,160,.07);border-color:rgba(143,168,160,.25);}
+.advice-icon{font-size:18px;flex-shrink:0;}
+.advice-title{font-weight:500;font-size:13px;margin-bottom:3px;color:var(--text);}
+.advice-text{font-size:12px;color:var(--text2);line-height:1.6;font-weight:300;}
+
+/* PROGRESS BARS */
+.prog-bar-wrap{margin-bottom:10px;}
+.prog-bar-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:5px;font-weight:300;}
+.prog-bar{height:6px;background:var(--surface3);border-radius:10px;overflow:hidden;}
+.prog-bar-fill{height:100%;border-radius:10px;transition:width .6s cubic-bezier(.16,1,.3,1);background:linear-gradient(90deg,var(--accent-light),var(--accent));}
+.prog-bar-fill.green{background:linear-gradient(90deg,rgba(122,184,154,.5),var(--success));}
+.prog-bar-fill.orange{background:linear-gradient(90deg,rgba(212,149,106,.5),var(--accent2));}
+.prog-bar-fill.blue{background:linear-gradient(90deg,rgba(143,168,160,.5),var(--accent3));}
+
+/* FORMS */
+.form-group{margin-bottom:14px;}
+.form-label{font-size:10px;color:var(--text2);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;font-weight:500;}
+.form-row{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+input[type="number"],input[type="text"],input[type="date"],select,textarea{
+  width:100%;background:var(--surface2);
+  border:1px solid var(--border);border-radius:var(--rs);
+  color:var(--text);font-family:var(--fb);font-size:14px;font-weight:300;
+  padding:10px 14px;outline:none;
+  transition:all .25s;-webkit-appearance:none;appearance:none;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);background:white;box-shadow:0 0 0 3px rgba(201,123,132,.1);}
+input[type="number"]{-moz-appearance:textfield;}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23b89e99' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;}
+
+/* BUTTONS */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  background:linear-gradient(135deg,var(--accent),var(--accent4));
+  color:white;font-family:var(--fb);font-weight:500;font-size:12px;
+  padding:10px 20px;border:none;border-radius:20px;cursor:pointer;
+  transition:all .25s;letter-spacing:.5px;white-space:nowrap;
+  box-shadow:0 4px 14px rgba(201,123,132,.3);
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(201,123,132,.4);}
+.btn:active{transform:translateY(0);box-shadow:0 2px 8px rgba(201,123,132,.2);}
+.btn-ghost{
+  background:transparent;color:var(--text2);
+  border:1px solid var(--border);box-shadow:none;
+}
+.btn-ghost:hover{background:var(--surface3);color:var(--text);border-color:var(--accent-light);box-shadow:none;}
+.btn-sm{padding:6px 14px;font-size:10px;}
+.btn-danger{background:linear-gradient(135deg,#e8848e,var(--accent));color:white;}
+.btn-success{background:linear-gradient(135deg,#7ab89a,#8fa8a0);color:white;}
+.btn-blue{background:linear-gradient(135deg,var(--accent3),var(--accent4));color:white;}
+.btn-full{width:100%;}
+
+/* WEIGHT LIST */
+.weight-list{list-style:none;max-height:260px;overflow-y:auto;}
+.weight-list::-webkit-scrollbar{width:3px;}
+.weight-list::-webkit-scrollbar-track{background:var(--surface2);}
+.weight-list::-webkit-scrollbar-thumb{background:var(--accent-light);border-radius:2px;}
+.weight-item{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border2);font-size:13px;transition:background .15s;}
+.weight-item:hover{background:var(--surface2);}
+.weight-item:last-child{border-bottom:none;}
+.weight-date{color:var(--text3);font-size:11px;font-family:var(--fm);}
+.weight-val{font-family:var(--fd);font-weight:400;font-style:italic;font-size:17px;color:var(--accent);}
+.weight-diff{font-size:10px;font-family:var(--fm);}
+.weight-diff.down{color:var(--success);}.weight-diff.up{color:var(--danger);}
+
+/* CHART */
+.chart-wrap{position:relative;height:210px;}
+
+/* WEEK DOTS */
+.week-dots{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:16px;}
+.week-dot{
+  width:28px;height:28px;border-radius:8px;
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--text3);font-size:9px;font-weight:500;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .18s;font-family:var(--fm);
+}
+.week-dot:hover{border-color:var(--accent-light);color:var(--accent);background:rgba(201,123,132,.07);}
+.week-dot.active{background:linear-gradient(135deg,var(--accent),var(--accent4));border-color:transparent;color:white;box-shadow:0 3px 10px rgba(201,123,132,.3);}
+.week-dot.deload{border-color:rgba(212,149,106,.35);color:var(--accent2);}
+
+/* DAY CARDS */
+.day-card{
+  background:var(--surface);border:1px solid var(--border2);
+  border-radius:var(--r);overflow:hidden;margin-bottom:10px;
+  box-shadow:0 2px 12px rgba(180,120,110,.06);
+  transition:box-shadow .2s,border-color .2s;
+}
+.day-card:hover{box-shadow:var(--shadow);}
+.day-card.done{border-color:rgba(122,184,154,.3);background:rgba(122,184,154,.03);}
+.day-card.today{border-color:var(--accent);box-shadow:0 0 0 2px rgba(201,123,132,.12),var(--shadow);}
+.day-card.rest{opacity:.5;}
+.day-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:13px 16px;border-bottom:1px solid var(--border2);
+  cursor:pointer;user-select:none;gap:8px;
+  transition:background .15s;
+}
+.day-header:hover{background:var(--surface2);}
+.day-name{
+  font-family:var(--fd);font-size:16px;font-weight:400;font-style:italic;
+  letter-spacing:.5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.day-type-badge{
+  font-size:9px;font-family:var(--fb);font-weight:500;
+  padding:3px 9px;border-radius:10px;text-transform:uppercase;
+  letter-spacing:.5px;font-style:normal;
+}
+.badge-upper{background:rgba(201,123,132,.12);color:var(--accent);}
+.badge-run{background:rgba(143,168,160,.15);color:var(--accent3);}
+.badge-hyrox{background:rgba(212,149,106,.12);color:var(--accent2);}
+.badge-glutes{background:rgba(184,155,191,.15);color:var(--accent4);}
+.badge-rest{background:rgba(184,158,153,.1);color:var(--text3);}
+.day-body{padding:14px 16px;display:none;border-top:none;}
+.day-body.open{display:block;}
+.exercise-list{list-style:none;}
+.exercise-item{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding:8px 0;border-bottom:1px solid var(--border2);font-size:12px;gap:10px;
+  font-weight:300;
+}
+.exercise-item:last-child{border-bottom:none;}
+.exercise-name{font-weight:400;color:var(--text);}
+.exercise-detail{color:var(--text3);font-family:var(--fm);font-size:11px;text-align:right;flex-shrink:0;}
+.toggle-icon{transition:transform .25s;color:var(--text3);flex-shrink:0;}
+.toggle-icon.open{transform:rotate(180deg);}
+.done-btn{
+  background:transparent;border:1px solid var(--border);
+  color:var(--text3);font-family:var(--fb);font-size:10px;font-weight:500;
+  padding:4px 12px;border-radius:12px;cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.done-btn.done{
+  background:rgba(122,184,154,.12);border-color:var(--success);color:var(--success);
+}
+
+/* MEAL */
+.meal-section{margin-bottom:16px;}
+.meal-section-title{
+  font-size:9px;text-transform:uppercase;letter-spacing:1.5px;
+  color:var(--text3);margin-bottom:10px;font-weight:500;
+  display:flex;align-items:center;gap:10px;
+}
+.meal-section-title::after{content:'';flex:1;height:1px;background:var(--border2);}
+.meal-item{
+  background:var(--surface2);border-radius:14px;
+  padding:11px 14px;margin-bottom:8px;
+  display:flex;justify-content:space-between;align-items:flex-start;
+  font-size:13px;gap:8px;border:1px solid var(--border2);
+  transition:background .15s;
+}
+.meal-item:hover{background:var(--surface3);}
+.meal-name{font-weight:400;line-height:1.4;color:var(--text);}
+.meal-kcal{font-family:var(--fm);font-size:10px;color:var(--text3);flex-shrink:0;text-align:right;line-height:1.5;}
+.macro-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px;}
+.macro-pill{
+  background:var(--surface2);border-radius:14px;padding:12px 8px;
+  text-align:center;border:1px solid var(--border2);
+}
+.macro-val{font-family:var(--fd);font-weight:400;font-style:italic;font-size:20px;}
+.macro-val.p{color:var(--accent2);}.macro-val.c{color:var(--accent3);}.macro-val.f{color:var(--accent);}
+.macro-lbl{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-top:3px;font-weight:500;}
+
+/* PHASE */
+.phase-bar{display:flex;border-radius:10px;overflow:hidden;height:6px;gap:2px;margin-bottom:8px;}
+.phase-seg{height:100%;border-radius:3px;transition:opacity .3s;}
+.phase-pill{
+  display:inline-block;font-size:9px;font-weight:500;
+  padding:3px 10px;border-radius:10px;text-transform:uppercase;letter-spacing:.5px;
+}
+.phase-basis{background:rgba(143,168,160,.15);color:var(--accent3);}
+.phase-overload{background:rgba(201,123,132,.12);color:var(--accent);}
+.phase-deload{background:rgba(212,149,106,.12);color:var(--accent2);}
+.phase-peak{background:rgba(184,155,191,.15);color:var(--accent4);}
+.phase-final{background:rgba(201,123,132,.18);color:var(--accent);}
+
+/* SECTION TITLE */
+.section-title{
+  font-family:var(--fd);font-size:32px;font-weight:300;font-style:italic;
+  letter-spacing:1px;margin-bottom:20px;
+  display:flex;align-items:center;gap:12px;color:var(--text);
+}
+.section-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);}
+
+/* LOG TABLE */
+.log-table{width:100%;border-collapse:collapse;font-size:12px;}
+.log-table th{text-align:left;padding:8px 10px;color:var(--text3);font-size:9px;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border2);font-weight:500;}
+.log-table td{padding:9px 10px;border-bottom:1px solid var(--border2);color:var(--text2);font-weight:300;}
+.log-table tr:last-child td{border-bottom:none;}
+.log-table tr:hover td{background:var(--surface2);}
+.log-table td:first-child{color:var(--text);font-weight:400;}
+.log-table td.pr{color:var(--accent);font-family:var(--fd);font-style:italic;font-size:15px;}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:32px;color:var(--text3);font-size:13px;font-weight:300;}
+.empty-state span{font-size:32px;display:block;margin-bottom:10px;opacity:.5;}
+
+/* INGREDIENTS */
+.ing-item{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border2);font-size:13px;font-weight:300;}
+.ing-item:last-child{border-bottom:none;}
+.ing-check{
+  width:20px;height:20px;border-radius:6px;
+  border:1.5px solid var(--border);background:var(--surface2);
+  cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:white;transition:all .2s;
+}
+.ing-check.checked{background:var(--success);border-color:var(--success);}
+
+/* SAVE BANNER */
+.save-banner{
+  position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:rgba(253,248,245,.95);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-top:1px solid var(--border2);
+  padding:10px 18px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+}
+.save-banner-text{font-size:11px;color:var(--text3);font-weight:300;letter-spacing:.2px;}
+
+/* DECORATIVE DIVIDER */
+.deco-divider{
+  text-align:center;color:var(--accent-light);
+  font-size:14px;letter-spacing:8px;
+  margin:4px 0 16px;opacity:.6;
+}
+
+@media(max-width:440px){
+  .hero-bar{grid-template-columns:1fr;}.week-badge{display:none;}.form-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">✿ CutPro</div>
+    <button class="nav-btn active" onclick="showPage('dashboard')">Home</button>
+    <button class="nav-btn" onclick="showPage('training')">Training</button>
+    <button class="nav-btn" onclick="showPage('logboek')">Logboek</button>
+    <button class="nav-btn" onclick="showPage('voeding')">Voeding</button>
+    <button class="nav-btn" onclick="showPage('gewicht')">Gewicht</button>
+    <button class="nav-btn" onclick="showPage('setup')">⚙ Setup</button>
+  </div>
+</nav>
+<main>
+
+<!-- DASHBOARD -->
+<div id="page-dashboard" class="page active">
+  <div class="hero-bar">
+    <div>
+      <div class="hero-title" id="dash-phase-name">CUT PROGRAM</div>
+      <div class="hero-sub" id="dash-phase-sub">Start: 8 juni 2026 · 15 Weken</div>
+    </div>
+    <div class="week-badge"><div id="dash-week-num">—</div><small id="dash-phase-label">VOOR START</small></div>
+  </div>
+  <div class="deco-divider">❀ ✿ ❀</div>
+  <div class="card">
+    <div class="card-title">📅 Tijdlijn</div>
+    <div class="phase-bar" id="phase-bar"></div>
+    <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-bottom:8px;"><span>Basis</span><span>Overload</span><span>Deload</span><span>Peak</span><span>D</span><span>Final</span></div>
+    <div style="font-family:var(--fm);font-size:12px;color:var(--text2);" id="dash-days-info"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">🔥 Cut Schema <span>15 weken · gezond & geleidelijk</span></div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:4px;">
+      <div style="background:rgba(143,168,160,.12);border-radius:10px;padding:8px 4px;text-align:center;">
+        <div style="font-family:var(--fd);font-style:italic;font-size:16px;color:var(--accent3);">2100</div>
+        <div style="font-size:8px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;">Wk 1–4<br>Basis</div>
+      </div>
+      <div style="background:rgba(201,123,132,.1);border-radius:10px;padding:8px 4px;text-align:center;">
+        <div style="font-family:var(--fd);font-style:italic;font-size:16px;color:var(--accent);">1950</div>
+        <div style="font-size:8px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;">Wk 5–8<br>Overload</div>
+      </div>
+      <div style="background:rgba(212,149,106,.1);border-radius:10px;padding:8px 4px;text-align:center;">
+        <div style="font-family:var(--fd);font-style:italic;font-size:16px;color:var(--accent2);">2050</div>
+        <div style="font-size:8px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;">Wk 9<br>Deload</div>
+      </div>
+      <div style="background:rgba(184,155,191,.1);border-radius:10px;padding:8px 4px;text-align:center;">
+        <div style="font-family:var(--fd);font-style:italic;font-size:16px;color:var(--accent4);">1800</div>
+        <div style="font-size:8px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;">Wk 10–13<br>Peak</div>
+      </div>
+      <div style="background:rgba(201,123,132,.15);border-radius:10px;padding:8px 4px;text-align:center;">
+        <div style="font-family:var(--fd);font-style:italic;font-size:16px;color:var(--danger);">1700</div>
+        <div style="font-size:8px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;">Wk 15<br>Final</div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--text3);margin-top:8px;font-weight:300;">✓ Verlies ~0.4–0.6 kg/week · spiermassa behouden · deload weken iets hoger voor herstel</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⚖️ Gewicht vandaag</div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <input type="number" id="quick-weight" placeholder="68.0" step="0.1" style="flex:1;">
+      <button class="btn" onclick="quickAddWeight()">+ Opslaan</button>
+    </div>
+    <div id="quick-weight-result" style="margin-top:8px;font-size:12px;color:var(--success);"></div>
+  </div>
+  <div class="stat-grid">
+    <div class="stat"><div class="stat-val yellow" id="d-kcal">—</div><div class="stat-label">Kcal Target</div></div>
+    <div class="stat"><div class="stat-val orange" id="d-protein">—</div><div class="stat-label">Eiwit</div></div>
+    <div class="stat"><div class="stat-val green" id="d-weight">—</div><div class="stat-label">Huidig Gewicht</div></div>
+    <div class="stat"><div class="stat-val blue" id="d-change">—</div><div class="stat-label">Verandering</div></div>
+  </div>
+  <div id="advice-box-wrap"></div>
+  <div class="card">
+    <div class="card-title">✿ Vandaag <span id="today-date-label"></span></div>
+    <div id="today-workout-summary"></div>
+    <div id="today-meal-summary"></div>
+  </div>
+</div>
+
+<!-- TRAINING -->
+<div id="page-training" class="page">
+  <div class="section-title">Training</div>
+  <div class="week-dots" id="week-dots"></div>
+  <div style="margin-bottom:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+    <span style="font-family:var(--fd);font-size:20px;" id="train-week-title">Week 1</span>
+    <span id="train-phase-pill"></span>
+    <span style="font-size:12px;color:var(--text2);" id="train-week-dates"></span>
+  </div>
+  <div id="day-grid"></div>
+</div>
+
+<!-- LOGBOEK -->
+<div id="page-logboek" class="page">
+  <div class="section-title">Logboek</div>
+
+  <!-- SET INVOER -->
+  <div class="card">
+    <div class="card-title">📝 Training Loggen</div>
+    <div class="form-row" style="margin-bottom:10px;">
+      <div class="form-group">
+        <label class="form-label">Datum</label>
+        <input type="date" id="lb-date">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Oefening</label>
+        <input type="text" id="lb-exercise" placeholder="Incline DB Press" list="exercise-suggestions">
+        <datalist id="exercise-suggestions"></datalist>
+      </div>
+    </div>
+    <!-- SETS: elk met eigen kg + reps + type -->
+    <div style="margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <label class="form-label" style="margin:0;">Sets (kg · reps · type)</label>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-sm btn-ghost" onclick="addSetRow()">+ Set</button>
+          <button class="btn btn-sm btn-ghost" onclick="removeSetRow()">− Set</button>
+        </div>
+      </div>
+      <!-- Kolom headers -->
+      <div style="display:grid;grid-template-columns:36px 1fr 1fr 90px 40px;gap:5px;margin-bottom:5px;padding:0 2px;">
+        <div></div>
+        <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;font-weight:500;">Gewicht</div>
+        <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;font-weight:500;">Reps</div>
+        <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;font-weight:500;">Type</div>
+        <div></div>
+      </div>
+      <div id="set-rows" style="display:flex;flex-direction:column;gap:5px;"></div>
+    </div>
+
+    <div class="form-group" style="margin-bottom:12px;">
+      <label class="form-label">RPE (algemeen)</label>
+      <select id="lb-rpe">
+        <option value="">— RPE —</option>
+        <option value="6">6 – Makkelijk</option>
+        <option value="7">7 – Comfortabel</option>
+        <option value="7.5">7.5</option>
+        <option value="8">8 – Zwaar</option>
+        <option value="8.5">8.5</option>
+        <option value="9">9 – Bijna max</option>
+        <option value="10">10 – Max</option>
+      </select>
+    </div>
+
+    <button class="btn btn-full" onclick="saveLogEntry()">💾 Opslaan</button>
+  </div>
+
+  <!-- PROGRESSIEVE OVERLOAD ADVIES -->
+  <div class="card">
+    <div class="card-title">📈 Volgende Training Advies</div>
+    <div id="po-suggestions">
+      <div style="font-size:12px;color:var(--text3);font-weight:300;">Log minimaal 2 trainingen per oefening voor advies.</div>
+    </div>
+    <div style="margin-top:12px;padding:12px 14px;background:var(--surface2);border-radius:12px;border:1px solid var(--border2);">
+      <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-weight:500;">Progressieve Overload Regels</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.9;font-weight:300;">
+        🔼 <strong style="font-weight:500;">Alle sets ≥10 reps?</strong> → Volgende keer +2,5 kg<br>
+        ↗️ <strong style="font-weight:500;">Meeste sets 8–9 reps?</strong> → Probeer meer reps, zelfde gewicht<br>
+        ✓ <strong style="font-weight:500;">Minder dan 8 reps?</strong> → Houd gewicht, bouw reps op<br>
+        💪 <strong style="font-weight:500;">Doel: spiermassa behouden</strong> tijdens de cut
+      </div>
+    </div>
+  </div>
+
+  <!-- PER OEFENING SESSIE HISTORY -->
+  <div class="card">
+    <div class="card-title">📋 Sessie Geschiedenis <span id="lb-filter-label"></span></div>
+    <div style="display:flex;gap:5px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;" id="ex-filter-btns">
+      <button class="btn btn-sm btn-ghost" onclick="filterLog('')">Alles</button>
+    </div>
+    <div id="lb-history"><div class="empty-state"><span>📊</span>Log je eerste training!</div></div>
+  </div>
+
+  <!-- PR -->
+  <div class="card">
+    <div class="card-title">🏆 Personal Records</div>
+    <div id="pr-table"><div class="empty-state"><span>🏋️</span>Nog geen sets gelogd.</div></div>
+  </div>
+
+  <!-- PROGRESSIE GRAFIEK -->
+  <div class="card">
+    <div class="card-title">📈 Progressie Grafiek <span id="prog-exercise-label"></span></div>
+    <div style="display:flex;gap:5px;margin-bottom:10px;overflow-x:auto;scrollbar-width:none;" id="prog-btns"></div>
+    <div class="chart-wrap"><canvas id="progress-chart"></canvas></div>
+  </div>
+</div>
+
+<!-- VOEDING -->
+<div id="page-voeding" class="page">
+  <div class="section-title">Voeding</div>
+  <div style="margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+    <span style="font-family:var(--fd);font-size:20px;" id="meal-week-title">Week 1</span>
+    <span style="font-size:12px;color:var(--text2);" id="meal-week-dates"></span>
+  </div>
+  <div class="week-dots" id="meal-week-dots"></div>
+  <div style="display:flex;gap:5px;margin-bottom:14px;overflow-x:auto;scrollbar-width:none;" id="meal-day-nav"></div>
+  <div id="meal-content"></div>
+</div>
+
+<!-- GEWICHT -->
+<div id="page-gewicht" class="page">
+  <div class="section-title">Gewicht</div>
+  <div class="card">
+    <div class="card-title">⚖️ Weging Toevoegen</div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Gewicht (kg)</label><input type="number" id="w-input" placeholder="68.0" step="0.1"></div>
+      <div class="form-group"><label class="form-label">Datum</label><input type="date" id="w-date"></div>
+    </div>
+    <button class="btn btn-full" onclick="addWeight()">➕ Toevoegen</button>
+  </div>
+  <div class="stat-grid">
+    <div class="stat"><div class="stat-val green" id="wt-start">—</div><div class="stat-label">Start</div></div>
+    <div class="stat"><div class="stat-val yellow" id="wt-current">—</div><div class="stat-label">Huidig</div></div>
+    <div class="stat"><div class="stat-val blue" id="wt-lost">—</div><div class="stat-label">Verloren</div></div>
+    <div class="stat"><div class="stat-val orange" id="wt-perweek">—</div><div class="stat-label">Per Week</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">📈 Gewichtsverloop</div>
+    <div class="chart-wrap"><canvas id="weight-chart"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-title">📋 Logboek</div>
+    <ul class="weight-list" id="weight-list"></ul>
+  </div>
+</div>
+
+<!-- SETUP -->
+<div id="page-setup" class="page">
+  <div style="text-align:center;padding:24px 0 20px;">
+    <div style="font-family:var(--fd);font-size:clamp(36px,9vw,64px);color:var(--accent);letter-spacing:3px;">CUTPRO</div>
+    <div style="color:var(--text2);margin-top:6px;font-size:14px;">15-Week Female Cut · Start 8 juni 2026</div>
+  </div>
+  <div class="card">
+    <div class="card-title">📐 Mijn Gegevens</div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Gewicht (kg)</label><input type="number" id="inp-weight" placeholder="68" step="0.1" value="68"></div>
+      <div class="form-group"><label class="form-label">Lengte (cm)</label><input type="number" id="inp-height" placeholder="170"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Leeftijd</label><input type="number" id="inp-age" placeholder="28"></div>
+      <div class="form-group"><label class="form-label">Eiwit doel (g)</label><input type="number" id="inp-protein-goal" placeholder="130" value="130"></div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Activiteitsniveau</label>
+      <select id="inp-activity">
+        <option value="1.375">Licht actief</option>
+        <option value="1.55" selected>Matig actief</option>
+        <option value="1.725">Zeer actief</option>
+        <option value="1.9">Extreem actief</option>
+      </select>
+    </div>
+    <button class="btn btn-full" onclick="saveSetup()">💾 Berekenen & Opslaan</button>
+  </div>
+  <div id="setup-result" style="display:none;">
+    <div class="stat-grid">
+      <div class="stat"><div class="stat-val yellow" id="res-bmr">—</div><div class="stat-label">BMR</div></div>
+      <div class="stat"><div class="stat-val blue" id="res-tdee">—</div><div class="stat-label">TDEE</div></div>
+      <div class="stat"><div class="stat-val green" id="res-cut">—</div><div class="stat-label">Cut Kcal</div></div>
+      <div class="stat"><div class="stat-val orange" id="res-protein">—</div><div class="stat-label">Eiwit</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🥗 Macro Verdeling</div>
+      <div class="macro-row">
+        <div class="macro-pill"><div class="macro-val p" id="res-p">—g</div><div class="macro-lbl">Eiwit</div></div>
+        <div class="macro-pill"><div class="macro-val c" id="res-c">—g</div><div class="macro-lbl">Koolhydraten</div></div>
+        <div class="macro-pill"><div class="macro-val f" id="res-f">—g</div><div class="macro-lbl">Vetten</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">📱 Opslaan als App (Safari)</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:14px;">
+      <strong style="color:var(--text);">Stap 1:</strong> Download het HTML-bestand hieronder.<br>
+      <strong style="color:var(--text);">Stap 2:</strong> Open het bestand in Safari.<br>
+      <strong style="color:var(--text);">Stap 3:</strong> Tik op het <strong style="color:var(--accent);">Deel-icoon</strong> (vierkantje + pijl omhoog).<br>
+      <strong style="color:var(--text);">Stap 4:</strong> Kies <strong style="color:var(--accent);">"Zet op beginscherm"</strong> → Voeg toe.
+    </div>
+    <button class="btn btn-full btn-blue" onclick="downloadApp()">⬇️ Download HTML App-bestand</button>
+  </div>
+  <div class="card">
+    <div class="card-title">🔄 Data Beheer</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+      <button class="btn btn-ghost" onclick="exportData()">📤 Exporteer</button>
+      <button class="btn btn-ghost" onclick="importData()">📥 Importeer</button>
+    </div>
+    <button class="btn btn-danger btn-full btn-sm" onclick="resetAll()">🗑 Alles Wissen</button>
+  </div>
+</div>
+
+</main>
+<div class="save-banner">
+  <span class="save-banner-text">💾 Opgeslagen · <span id="last-saved">—</span></span>
+  <button class="btn btn-sm btn-blue" onclick="downloadApp()">⬇️ Download bestand</button>
+</div>
+
+<script>
+// ── CONSTANTS ──────────────────────────────────────────────
+const START_DATE = new Date('2026-06-08');
+const PROGRAM_WEEKS = 15;
+const PHASES = [
+  {weeks:[1,2,3,4],   name:'BASIS',   label:'basis',   color:'#47d4ff'},
+  {weeks:[5,6,7,8],   name:'OVERLOAD',label:'overload',color:'#e8ff47'},
+  {weeks:[9],         name:'DELOAD',  label:'deload',  color:'#ffcc47'},
+  {weeks:[10,11,12,13],name:'PEAK',  label:'peak',    color:'#ff6b35'},
+  {weeks:[14],        name:'DELOAD',  label:'deload',  color:'#ffcc47'},
+  {weeks:[15],        name:'FINAL',   label:'final',   color:'#ff4763'},
+];
+
+// Ma=0 … Zo=6
+const DAYS_CONFIG = [
+  {name:'Maandag',   type:'upper',  badge:'badge-upper', label:'Upper Body',      icon:'🏋️'},
+  {name:'Dinsdag',   type:'run',    badge:'badge-run',   label:'Interval Run',    icon:'🏃'},
+  {name:'Woensdag',  type:'hyrox',  badge:'badge-hyrox', label:'HYROX',           icon:'⚡'},
+  {name:'Donderdag', type:'glutes', badge:'badge-glutes',label:'Glutes',          icon:'🍑'},
+  {name:'Vrijdag',   type:'hyrox2', badge:'badge-hyrox', label:'HYROX',           icon:'🔥'},
+  {name:'Zaterdag',  type:'longrun',badge:'badge-run',   label:'Long Run Zone 2', icon:'🫀'},
+  {name:'Zondag',    type:'rest',   badge:'badge-rest',  label:'Rust',            icon:'😴'},
+];
+
+// ── MEAL DATA ──────────────────────────────────────────────
+const BRKFAST_OATS = {
+  name:'Overnight Oats',
+  items:['70g havermout','150g Griekse yoghurt','100ml water','1 el pindakaas','1 tl chiazaad','1 scoop eiwitpoeder','2 blokjes pure chocolade','50g diepvries blauwe bessen'],
+  kcal:580,p:42,c:60,f:18
+};
+// Havermoutpap met banaan
+const BRKFAST_PAP_BANAAN = {
+  name:'Havermoutpap met banaan',
+  items:['70g havermout','150ml water (in pan)','1 scoop eiwitpoeder','1 tl kaneel','1 geprakte banaan','1 blokje pure chocolade','1 el pindakaas','1 tl chiazaad'],
+  kcal:570,p:38,c:68,f:16
+};
+// Havermoutpap met appel
+const BRKFAST_PAP_APPEL = {
+  name:'Havermoutpap met appel',
+  items:['70g havermout','150ml water (in pan)','1 scoop eiwitpoeder','1 tl kaneel','1 appel (gesneden)','1 blokje pure chocolade','1 el pindakaas','1 tl chiazaad'],
+  kcal:555,p:37,c:65,f:16
+};
+const BREAKFASTS = [BRKFAST_OATS, BRKFAST_PAP_BANAAN, BRKFAST_OATS, BRKFAST_PAP_APPEL];
+
+const LUNCHES = [
+  {name:'Kip wrap met hummus, ijsbergsla & tomaat',          kcal:520,p:36,c:52,f:14},
+  {name:'Belegd broodje kip & avocado',                       kcal:500,p:32,c:50,f:17},
+  {name:'Flatbread met gehakt, paprika & mozzarella',         kcal:560,p:37,c:54,f:19},
+  {name:'Volkoren boterham met roerei (2 eieren) & spinazie', kcal:470,p:30,c:46,f:15},
+  {name:'Wrap met kalkoen, cheddar & mosterd',                kcal:530,p:38,c:50,f:16},
+  {name:'Flatbread met kip & gegrilde groenten',              kcal:540,p:34,c:56,f:14},
+  {name:'Broodje avocado, ei & rucola',                       kcal:480,p:26,c:48,f:20},
+  {name:'Kip quesadilla met kaas & salsa',                    kcal:550,p:39,c:52,f:18},
+  {name:'Wrap met rundergehakt, paprika & guacamole',         kcal:570,p:38,c:54,f:20},
+  {name:'Flatbread met gegrilde kip & pesto',                 kcal:535,p:35,c:53,f:17},
+  {name:'Boterham met kipfilet, tomaat & pesto',              kcal:490,p:33,c:48,f:16},
+  {name:'Avocado toast met gebakken ei & chilivlokken',       kcal:510,p:24,c:46,f:24},
+  {name:'Wrap met gehakt, mais & salsa',                      kcal:545,p:36,c:55,f:18},
+  {name:'Flatbread met ei, paprika & feta',                   kcal:520,p:32,c:50,f:19},
+];
+
+const DINNERS = [
+  {name:'Kipfilet + witte rijst + broccoli & paprika',        kcal:640,p:50,c:65,f:12, ingredients:['220g kipfilet','180g witte rijst (droog)','200g broccoli','1 rode paprika','olijfolie, knoflookpoeder, zout']},
+  {name:'Rundergehakt bolognese met volkoren pasta',           kcal:680,p:48,c:68,f:18, ingredients:['220g rundergehakt 5% vet','120g volkoren penne (droog)','150ml gezeefde tomaten','ui, knoflook, oregano','15g Parmezaan']},
+  {name:'Kip stir-fry met noedels & paprika',                 kcal:620,p:46,c:62,f:14, ingredients:['220g kipfilet','120g ei-noedels (droog)','1 paprika, 1 wortel, lente-ui','sojasaus, sesamolie, gember','1 tl honing']},
+  {name:'Kipschnitzel + zoete aardappelpuree + sperziebonen', kcal:660,p:48,c:60,f:16, ingredients:['220g kipschnitzel','350g zoete aardappel','150g sperziebonen','olijfolie, paprikapoeder, zout']},
+  {name:'Kip taco wraps met guacamole & salsa',               kcal:650,p:44,c:58,f:21, ingredients:['220g kipfilet strips','3 tortilla wraps','½ avocado','tomaat, rode ui, limoen','koriander, komijnpoeder']},
+  {name:'Rundergehakt burrito bowl met rijst & maïs',         kcal:670,p:46,c:66,f:18, ingredients:['220g rundergehakt','180g witte rijst (droog)','100g maïs (blik)','50g kidneybonen (blik)','geraspte cheddar 20g, salsa']},
+  {name:'Pasta met kip & romige tomatensaus',                  kcal:660,p:46,c:64,f:16, ingredients:['220g kipfilet','120g penne (droog)','150ml gezeefde tomaten','50ml kookroom (light)','basilicum, knoflook, 15g Parmezaan']},
+  {name:'Kippensoep met vermicelli & wortel',                  kcal:520,p:44,c:50,f:10, ingredients:['220g kipfilet reepjes','80g vermicelli','1 wortel, selderij, ui','kippenbouillon, peterselie, tijm']},
+  {name:'Kip curry met basmatirijst',                          kcal:660,p:47,c:64,f:16, ingredients:['220g kipfilet','180g basmatirijst (droog)','150ml kokosmelk (light)','currypoeder, knoflook, gember, ui']},
+  {name:'Rundergehakt pasta bake met kaas',                    kcal:690,p:49,c:65,f:19, ingredients:['220g rundergehakt','120g rigatoni (droog)','100ml gezeefde tomaten','30g geraspte mozzarella','oregano, knoflook']},
+  {name:'Kip wrap bowl met rijst & mais',                      kcal:645,p:45,c:62,f:16, ingredients:['220g kipfilet','160g witte rijst (droog)','80g maïs','½ avocado','limoen, koriander, paprikapoeder']},
+  {name:'Gehakt met volkoren pasta & tomatensaus',             kcal:670,p:47,c:66,f:17, ingredients:['220g rundergehakt','120g spaghetti volkoren (droog)','200ml passata','ui, knoflook, basilicum','10g Parmezaan']},
+];
+
+// Snack 1 = altijd Griekse yoghurt variant
+const SNACKS_YOGHURT = [
+  {name:'Griekse yoghurt (200g) + aardbeien (100g)',       kcal:155,p:18,c:13,f:3},
+  {name:'Griekse yoghurt (200g) + kiwi (2 stuks)',         kcal:150,p:18,c:12,f:3},
+  {name:'Griekse yoghurt (200g) + mandarijn (2 stuks)',    kcal:160,p:18,c:16,f:3},
+  {name:'Griekse yoghurt (200g) + sinaasappel + kiwi',     kcal:165,p:18,c:17,f:3},
+  {name:'Griekse yoghurt (200g) + aardbeien + chiazaad',   kcal:175,p:19,c:14,f:5},
+  {name:'Griekse yoghurt (200g) + mandarijn + chiazaad',   kcal:170,p:18,c:16,f:5},
+  {name:'Griekse yoghurt (200g) + kiwi + aardbeien',       kcal:160,p:18,c:14,f:3},
+];
+// Snack 2 = altijd iets anders (geen yoghurt)
+const SNACKS_OTHER = [
+  {name:'Rijstwafels (3x) + pindakaas (1 el)',             kcal:200,p:6, c:24,f:9},
+  {name:'Handvol amandelen (25g) + mandarijn',             kcal:195,p:5, c:14,f:14},
+  {name:'Rijstwafel (2x) + pindakaas + banaan',            kcal:210,p:6, c:32,f:8},
+  {name:'Walnoten (25g) + sinaasappel',                    kcal:200,p:5, c:12,f:16},
+  {name:'Rijstwafels (3x) + honing + kiwi',                kcal:185,p:3, c:38,f:1},
+  {name:'Cashewnoten (25g) + mandarijn (2x)',               kcal:205,p:5, c:18,f:13},
+  {name:'Rijstwafel (2x) + amandelboter (1 el)',           kcal:195,p:5, c:22,f:10},
+];
+
+const PRE_WORKOUT = [
+  {name:'Banaan + 2 rijstwafels',                          kcal:185,p:3, c:42,f:1},
+  {name:'Witte rijstwafels (3x) + dun laagje honing',      kcal:165,p:2, c:38,f:0},
+  {name:'½ banaan + 1 el pindakaas',                       kcal:160,p:4, c:22,f:6},
+  {name:'Mandarijn (2x) + rijstwafel',                     kcal:145,p:2, c:34,f:0},
+];
+
+// ── TRAINING ───────────────────────────────────────────────
+// Upper body: vaste kern elke week, 1-2 oefeningen wisselen per variant
+// Kern (altijd): Incline DB Press · Barbell Row · Shoulder Press · Lat Pulldown · Face Pulls · Lat Raises · Tricep · Abs
+// Vaste upper body workout – elke week identiek, progressieve overload via logboek
+const UPPER_SCHEMA = [
+  {name:'Incline Dumbbell Press',  det:'{s}×10–12 @ RPE {rpe}'},
+  {name:'Barbell Row',             det:'{s}×10–12 @ RPE {rpe}'},
+  {name:'Shoulder Press (DB)',     det:'{s}×10 @ RPE {rpe}'},
+  {name:'Lat Pulldown',            det:'{s}×12'},
+  {name:'Face Pulls (kabel)',      det:'3×20'},
+  {name:'Lateral Raises (DB)',     det:'3×15 per kant'},
+  {name:'Hanging Leg Raises',      det:'3×{ab}'},
+  {name:'Ab Roller',               det:'3×{ab} gecontroleerd'},
+];
+// Alias zodat de rest van de code blijft werken
+const UPPER_VARIANTS = [UPPER_SCHEMA, UPPER_SCHEMA, UPPER_SCHEMA, UPPER_SCHEMA];
+
+const INTERVAL_VARIANTS = [
+  [{name:'Opwarming',       det:'10 min rustig'},{name:'6× 400m @ 85%',  det:'90s rust tussen sets'},{name:'Cool-down',det:'10 min wandelen + stretch'}],
+  [{name:'Opwarming',       det:'10 min'},{name:'8× 200m @ 90%',         det:'60s rust'},{name:'Cool-down + stretch',det:'10 min'}],
+  [{name:'Opwarming',       det:'10 min'},{name:'4× 800m @ 82%',         det:'2 min rust'},{name:'Cool-down',det:'10 min'}],
+  [{name:'Opwarming',       det:'10 min'},{name:'10× 300m @ 87%',        det:'75s rust'},{name:'Cool-down',det:'10 min'}],
+  [{name:'Opwarming',       det:'10 min'},{name:'5× 1 km tempo @ 80%',   det:'2 min rust'},{name:'Cool-down',det:'10 min'}],
+  [{name:'Opwarming',       det:'10 min'},{name:'12× 200m @ 92% (sprint)',det:'45s rust – max snelheid'},{name:'Cool-down',det:'10 min'}],
+  [{name:'Opwarming',       det:'10 min'},{name:'3× 1,5 km @ 78%',       det:'3 min rust – aeroob'},{name:'Cool-down',det:'10 min'}],
+  [{name:'Opwarming',       det:'10 min'},{name:'Tabata Run 8×',          det:'20s sprint / 10s rust – 4 rondes'},{name:'Cool-down',det:'10 min'}],
+];
+
+const HYROX_VARIANTS = [
+  [ // A – Klassiek HYROX (race-spec)
+    {name:'Warming-up run',              det:'1 km @ Zone 2 (rustig)'},
+    {name:'── 2 RONDES ──',             det:'na elke ronde: 1 km compromised run'},
+    {name:'  ↳ Ski Erg',                det:'1.000 m – houd tempo constant'},
+    {name:'  ↳ Sled Push',              det:'50 m @ lichaamsgewicht (68 kg) op slee'},
+    {name:'  ↳ Burpee Broad Jumps',     det:'20 reps – zo ver mogelijk springen'},
+    {name:'  ↳ Row Erg',                det:'1.000 m – slagen/min: 24–26'},
+    {name:'  ↳ Farmers Carry',          det:'50 m met 2×20 kg kettlebells'},
+    {name:'Compromised run',            det:'1 km @ 80% direct na elk station'},
+    {name:'Cool-down + stretch',        det:'10 min wandelen, heupen & hamstrings uitrekken'},
+  ],
+  [ // B – Kracht focus
+    {name:'Warming-up',                  det:'800 m @ rustig joggen'},
+    {name:'── 3 RONDES ──',             det:'na elke ronde: 600 m compromised run'},
+    {name:'  ↳ Sled Push',              det:'25 m heen + 25 m terug @ 80 kg op slee'},
+    {name:'  ↳ Sandbag Lunges',         det:'25 m met 10 kg sandbag op schouder'},
+    {name:'  ↳ Wallballs',              det:'25 reps @ 6 kg bal, doel op 3 m hoogte'},
+    {name:'  ↳ Box Step-up',            det:'20 reps (10 per been) @ 60 cm box'},
+    {name:'Compromised run',            det:'600 m @ 80% na elke ronde'},
+    {name:'Cool-down',                  det:'10 min wandelen + foam rolling benen'},
+  ],
+  [ // C – Snelheid focus
+    {name:'Warming-up',                  det:'1 km @ gemakkelijk tempo'},
+    {name:'── 2 RONDES ──',             det:'na elke ronde: 800 m compromised run'},
+    {name:'  ↳ Row Erg sprint',         det:'500 m @ max effort – doel: < 2:10 min'},
+    {name:'  ↳ Ski Erg sprint',         det:'500 m @ max effort – doel: < 2:15 min'},
+    {name:'  ↳ Burpees',               det:'15 reps – zo snel mogelijk'},
+    {name:'  ↳ Double Unders',          det:'50 reps springtouw (of 100 jumping jacks)'},
+    {name:'Compromised run',            det:'800 m @ 85% direct na circuit'},
+    {name:'Cool-down',                  det:'10 min wandelen + uitrekken'},
+  ],
+  [ // D – Uithoudingsvermogen (lang)
+    {name:'Warming-up',                  det:'1 km @ Zone 2'},
+    {name:'── 1 LANGE RONDE ──',        det:'volledig circuit zonder rust'},
+    {name:'  ↳ Ski Erg',                det:'2.000 m – rustig tempo, constante power'},
+    {name:'  ↳ Sled Push',              det:'50 m @ lichaamsgewicht (68 kg)'},
+    {name:'  ↳ Burpee Broad Jumps',     det:'30 reps'},
+    {name:'  ↳ Row Erg',                det:'2.000 m – slagen/min: 22–24'},
+    {name:'  ↳ Farmers Carry',          det:'50 m met 2×22 kg kettlebells'},
+    {name:'  ↳ Sandbag Lunges',         det:'25 m met 10 kg sandbag'},
+    {name:'Compromised run – einde',    det:'1,5 km @ 75% na het volledige circuit'},
+    {name:'Cool-down',                  det:'10 min wandelen + volledige stretch'},
+  ],
+  [ // E – Interval HYROX
+    {name:'Warming-up',                  det:'1 km @ gemakkelijk'},
+    {name:'── 4 MINI RONDES ──',        det:'na elke ronde: 500 m compromised run'},
+    {name:'  ↳ Wallballs',              det:'20 reps @ 6 kg bal, doel op 3 m hoogte'},
+    {name:'  ↳ Ski Erg',                det:'250 m @ max effort – alles eruit'},
+    {name:'  ↳ Box Step-up',            det:'20 reps (10 per been) @ 60 cm box'},
+    {name:'Compromised run',            det:'500 m @ 85% direct na elk mini-circuit'},
+    {name:'Finisher: Row Erg',          det:'1.000 m @ 85% – finish sterk'},
+    {name:'Cool-down',                  det:'10 min wandelen + heupen stretchen'},
+  ],
+  [ // F – Deload (licht)
+    {name:'Deload HYROX – licht volume', det:'focus op techniek, niet op snelheid'},
+    {name:'Ski Erg',                     det:'500 m @ 70% – rustig, goede techniek'},
+    {name:'Row Erg',                     det:'500 m @ 70% – lange slagen, lage freq.'},
+    {name:'Farmers Carry',              det:'25 m met 2×15 kg kettlebells – licht'},
+    {name:'Burpees',                    det:'10 reps – gecontroleerd tempo'},
+    {name:'Wallballs',                  det:'15 reps @ 6 kg – techniek focus'},
+    {name:'Compromised run',            det:'500 m @ 60% – wandelen mag'},
+    {name:'Cool-down',                  det:'10–15 min wandelen + volledige stretch'},
+  ],
+];
+
+const LONGRUN_VARIANTS = [
+  [{name:'Zone 2 Run',det:'35 min @ 60-70% max HR'},{name:'Cadans doel',det:'170-180 spm – rustig'}],
+  [{name:'Zone 2 Run met heuvel',det:'40 min @ 60-70% max HR'},{name:'Focus',det:'Kleine hellingen zoeken'}],
+  [{name:'Zone 2 Run',det:'45 min @ 60-70% max HR'},{name:'Test',det:'Kan je gemakkelijk praten? Dan goed tempo'}],
+  [{name:'Zone 2 Run',det:'50 min @ 60-70% max HR'},{name:'Extra',det:'10 min naloop wandelen'}],
+  [{name:'Zone 2 Run',det:'55 min @ 60-70% max HR'},{name:'Vetverbranding',det:'Optimaal voor body composition'}],
+  [{name:'Zone 2 Run',det:'60 min @ 60-70% max HR'},{name:'Langste run',det:'Bewust tempo bewaken'}],
+  [{name:'Zone 2 Run',det:'40 min @ 60-70%'},{name:'Herstel focus',det:'Geen prestatiedruk – geniet ervan'}],
+  [{name:'Nuchter Zone 2 Run',det:'30 min voor ontbijt @ 60%'},{name:'Na run',det:'Direct eiwit-rijk ontbijt eten'}],
+];
+
+// Saturday compromised run – afwisselend
+const SAT_VARIANTS = [
+  [ // 1 – Race simulatie (volledige HYROX race)
+    {name:'🏁 HYROX Race Simulatie',    det:'Zo dicht mogelijk bij een echte race'},
+    {name:'Run 1 km @ 80%',             det:'Zone 3 – gecontroleerd starten'},
+    {name:'  → Ski Erg 1.000 m',        det:'Houd tempo – doel: < 4:30 min'},
+    {name:'Run 1 km @ 80%',             det:'Direct na Ski Erg – benen zijn zwaar'},
+    {name:'  → Sled Push 50 m',         det:'@ lichaamsgewicht (68 kg) op slee'},
+    {name:'Run 1 km @ 80%',             det:'Direct na Sled Push'},
+    {name:'  → Burpee Broad Jumps 20',  det:'Maximale sprongafstand per rep'},
+    {name:'Run 1 km @ 80%',             det:'Direct na Burpees'},
+    {name:'  → Row Erg 1.000 m',        det:'Slagen/min: 24–26, doel: < 4:45 min'},
+    {name:'Run 1 km @ Finish',          det:'Totaal: 5 km run + 4 HYROX-stations'},
+  ],
+  [ // 2 – Snelheid compromised
+    {name:'Opwarming',                   det:'1 km @ Zone 2 – rustig instappen'},
+    {name:'── 4 SNELHEIDSBLOKKEN ──',   det:'2 min rust tussen blokken'},
+    {name:'  ↳ Run 400 m @ 85%',        det:'Doel: zo snel als 5 km-wedstrijdtempo'},
+    {name:'  ↳ Direct → Wallballs',     det:'15 reps @ 6 kg bal op 3 m doel'},
+    {name:'  ↳ Direct → Run 200 m',     det:'Sprint @ 90–95% – alles geven'},
+    {name:'Rust',                        det:'2 min volledig herstel tussen blokken'},
+    {name:'Finisher: Row Erg',          det:'500 m @ max effort – zo snel mogelijk'},
+    {name:'Cool-down',                  det:'10 min wandelen + uitrekken'},
+  ],
+  [ // 3 – Kracht compromised
+    {name:'Opwarming',                   det:'1 km @ Zone 2'},
+    {name:'── 3 KRACHTBLOKKEN ──',      det:'90s rust tussen blokken'},
+    {name:'  ↳ Sled Push 30 m',         det:'@ 80 kg op slee – explosief duwen'},
+    {name:'  ↳ Direct → Run 600 m',     det:'@ 80–85% – voel de benen branden'},
+    {name:'  ↳ Sandbag Lunges 20 m',    det:'10 kg sandbag op schouder – gecontroleerd'},
+    {name:'  ↳ Direct → Run 600 m',     det:'@ 80% – houd vorm in de looppas'},
+    {name:'Rust',                        det:'90s volledige rust tussen elk blok'},
+    {name:'Cool-down',                  det:'10 min wandelen + foam rolling benen'},
+  ],
+  [ // 4 – Zone 3 tempo compromised
+    {name:'Opwarming',                   det:'1 km @ Zone 2'},
+    {name:'Tempo run',                   det:'5 km @ 75% – Zone 3, comfortabel zwaar'},
+    {name:'Direct na run → Ski Erg',    det:'500 m @ max effort – geen rust'},
+    {name:'Direct na Ski → Row Erg',    det:'500 m @ max effort – alles eruit'},
+    {name:'Farmers Carry',              det:'2× 50 m met 2×20 kg – als finisher'},
+    {name:'Cool-down',                  det:'10 min wandelen + volledige stretch'},
+  ],
+  [ // 5 – Long compromised (uithoudingsvermogen)
+    {name:'Opwarming',                   det:'1 km @ Zone 2'},
+    {name:'Run 2 km @ 75%',             det:'Gecontroleerd tempo bewaren'},
+    {name:'  → Farmers Carry 50 m',     det:'2×20 kg kettlebells – recht lopen'},
+    {name:'Run 2 km @ 75%',             det:'Direct na Farmers Carry'},
+    {name:'  → Burpees 20 reps',        det:'Explosief, elke rep telt'},
+    {name:'Run 2 km @ 75%',             det:'Laatste 2 km – geef alles'},
+    {name:'Totaal',                      det:'6 km run + krachtstations tussendoor'},
+    {name:'Cool-down',                  det:'10 min wandelen + heupen & hamstrings'},
+  ],
+];
+
+// ── WORKOUT GENERATOR ──────────────────────────────────────
+function getPhaseForWeek(w){ return PHASES.find(p=>p.weeks.includes(w))||PHASES[0]; }
+
+function getUpperWorkout(week){
+  const ph = getPhaseForWeek(week);
+  const isDeload = ph.name==='DELOAD';
+  const s = isDeload?2:(week<=4?3:4);
+  const r = week<=4?'10–12':(week<=8?'8–10':'6–8');
+  const rpe = isDeload?'6':(week<=4?'7':(week<=8?'7.5':'8.5'));
+  const rpe1 = isDeload?'5.5':(week<=4?'6.5':(week<=8?'7':'8'));
+  const ab = week<=4?'8':(week<=8?'10':'12');
+  const v = UPPER_VARIANTS[(week-1)%4];
+  return v.map(e=>({
+    name:e.name,
+    detail:e.det.replace(/{s}/g,s).replace(/{r}/g,r).replace(/{rpe}/g,rpe).replace(/{rpe-1}/g,rpe1).replace(/{ab}/g,ab)
+  }));
+}
+
+function getGlutes(week){
+  const ph = getPhaseForWeek(week);
+  const isDeload = ph.name==='DELOAD';
+  const s = isDeload?2:(week<=4?3:4);
+  const r = week<=4?'12–15':(week<=8?'10–12':'8–10');
+  const rpe = isDeload?'6':(week<=4?'7':(week<=8?'7.5':'8.5'));
+  return [
+    {name:'Hip Thrust (Barbell)',      detail:`${s}×${r} @ RPE ${rpe}`},
+    {name:'Romanian Deadlift (RDL)',   detail:`${s}×${r} @ RPE ${rpe}`},
+    {name:'Bulgarian Split Squat',     detail:`${s}×${r} per been @ RPE ${rpe}`},
+    {name:'Cable Kickback',            detail:`3×15 per been`},
+    {name:'Abductor Machine',          detail:`3×20`},
+
+  ];
+}
+
+function generateWorkout(type, week){
+  const ph = getPhaseForWeek(week);
+  const isDeload = ph.name==='DELOAD';
+  const vi = (week-1)%8;
+  const hi = isDeload?5:(week-1)%5;
+  const si = (week-1)%SAT_VARIANTS.length;
+  const li = (week-1)%LONGRUN_VARIANTS.length;
+  switch(type){
+    case 'upper':   return getUpperWorkout(week);
+    case 'run':     return isDeload?[{name:'Easy Run',detail:'20 min @ 60%'},{name:'Stretch',detail:'10 min'}]:INTERVAL_VARIANTS[vi];
+    case 'hyrox':   return HYROX_VARIANTS[hi];
+    case 'glutes':  return getGlutes(week);
+    case 'hyrox2': {
+      const base = isDeload?HYROX_VARIANTS[5]:SAT_VARIANTS[si];
+      const abs = [
+        {name:'── ABS FINISHER ──',          det:'na de HYROX workout'},
+        {name:'Cable Crunches',              det:`3×15 @ RPE ${isDeload?'6':'7.5'} – bovenkant naar knieën`},
+        {name:'Raised Leg Bench Crunches',   det:'3×20 – benen 90° omhoog, onderrug plat'},
+      ];
+      return [...base, ...abs];
+    }
+    case 'longrun': return isDeload?[{name:'Easy Zone 2',detail:'25 min @ 60%'},{name:'Wandelen',detail:'10 min'}]:LONGRUN_VARIANTS[li];
+    case 'rest':    return [{name:'Actief herstel',detail:'Wandelen / yoga / stretching'},{name:'Slaap',detail:'8+ uur prioriteit'}];
+    default:        return [];
+  }
+}
+
+// ── MEAL PLAN ──────────────────────────────────────────────
+function getMealForDay(weekNum, dayIdx){
+  const seed = weekNum*7+dayIdx;
+  const dt = DAYS_CONFIG[dayIdx].type;
+  const brkfast = BREAKFASTS[(dayIdx+(weekNum%2)*2)%BREAKFASTS.length];
+  const lunch = LUNCHES[seed%LUNCHES.length];
+  const dinner = DINNERS[seed%DINNERS.length];
+  const s1 = SNACKS_YOGHURT[dayIdx%SNACKS_YOGHURT.length];
+  const s2 = SNACKS_OTHER[(dayIdx+Math.floor(weekNum/2))%SNACKS_OTHER.length];
+  const needPre = ['run','hyrox','hyrox2','longrun'].includes(dt);
+  const preWO = needPre?PRE_WORKOUT[dayIdx%PRE_WORKOUT.length]:null;
+  const tot = {
+    kcal: brkfast.kcal+lunch.kcal+dinner.kcal+s1.kcal+s2.kcal+(preWO?preWO.kcal:0),
+    p:    brkfast.p+lunch.p+dinner.p+s1.p+s2.p+(preWO?preWO.p:0),
+    c:    brkfast.c+lunch.c+dinner.c+s1.c+s2.c+(preWO?preWO.c:0),
+    f:    brkfast.f+lunch.f+dinner.f+s1.f+s2.f+(preWO?preWO.f:0),
+  };
+  return {brkfast,lunch,dinner,s1,s2,preWO,tot};
+}
+
+// ── STATE ──────────────────────────────────────────────────
+let S = {
+  setup:    JSON.parse(localStorage.getItem('cp_setup')||'null'),
+  weights:  JSON.parse(localStorage.getItem('cp_weights')||'[]'),
+  done:     JSON.parse(localStorage.getItem('cp_done')||'{}'),
+  log:      JSON.parse(localStorage.getItem('cp_log')||'[]'),
+  calAdj:   parseInt(localStorage.getItem('cp_cal_adj')||'0'),
+  curWeek:1, mealWeek:1, mealDay:0, openDays:{},
+  wChart:null, pChart:null, logFilter:'', progEx:'',
+};
+
+// ── UTILS ──────────────────────────────────────────────────
+function getCurWeek(){ const d=Math.floor((new Date()-START_DATE)/(7*864e5)); return d<0?null:Math.min(d+1,PROGRAM_WEEKS); }
+function getWSD(w){ const d=new Date(START_DATE); d.setDate(d.getDate()+(w-1)*7); return d; }
+function fmt(d){ return d.toLocaleDateString('nl-NL',{day:'numeric',month:'short'}); }
+function fmtFull(d){ return d.toLocaleDateString('nl-NL',{weekday:'long',day:'numeric',month:'long'}); }
+function iso(d){ return d.toISOString().split('T')[0]; }
+
+function persist(){
+  localStorage.setItem('cp_setup',JSON.stringify(S.setup));
+  localStorage.setItem('cp_weights',JSON.stringify(S.weights));
+  localStorage.setItem('cp_done',JSON.stringify(S.done));
+  localStorage.setItem('cp_log',JSON.stringify(S.log));
+  localStorage.setItem('cp_cal_adj',S.calAdj);
+  document.getElementById('last-saved').textContent=new Date().toLocaleTimeString('nl-NL',{hour:'2-digit',minute:'2-digit'});
+}
+
+// ── CALORIE CALC ───────────────────────────────────────────
+// Gezond cut schema: start 2100, geleidelijk dalen per fase
+// Wk 1-4 Basis: 2100 | Wk 5-8 Overload: 1950 | Wk 9 Deload: 2050
+// Wk 10-13 Peak: 1800 | Wk 14 Deload: 1950 | Wk 15 Final: 1700
+const PHASE_CALORIES = {
+  1:2100,2:2100,3:2100,4:2100,
+  5:1950,6:1950,7:1950,8:1950,
+  9:2050,
+  10:1800,11:1800,12:1800,13:1800,
+  14:1950,
+  15:1700
+};
+
+function calcCals(wt,ht,age,act,pGoal){
+  const bmr=Math.round(10*wt+6.25*ht-5*age-161);
+  const tdee=Math.round(bmr*act);
+  // Start van de cut: TDEE minus ~200 kcal = week 1 target (~2100)
+  const cut=2100;
+  const fats=Math.round(wt*0.9);
+  const carbs=Math.max(0,Math.round((cut-pGoal*4-fats*9)/4));
+  return {bmr,tdee,cut,protein:pGoal,carbs,fats};
+}
+
+function getPhaseCalories(){
+  const pw=getCurWeek();
+  if(!pw) return 2100;
+  return PHASE_CALORIES[pw]||2100;
+}
+
+function getAdaptedCal(){
+  // Basis = fase-calorieën, dan adaptieve aanpassing erop
+  const base=getPhaseCalories();
+  return base+S.calAdj;
+}
+
+function analyzeProgress(){
+  if(S.weights.length<3) return null;
+  const s=[...S.weights].sort((a,b)=>new Date(a.date)-new Date(b.date)).slice(-14);
+  if(s.length<3) return null;
+  const days=Math.max(1,(new Date(s[s.length-1].date)-new Date(s[0].date))/864e5);
+  const wr=((s[s.length-1].value-s[0].value)/days)*7;
+  return {weeklyRate:wr, weeklyPct:(wr/s[0].value)*100};
+}
+
+function autoAdjust(){
+  const a=analyzeProgress();
+  if(!a) return;
+  // >0.5 kg/week verlies = spierverlies risico → calorieën omhoog
+  // <0.1 kg/week = te weinig verlies → calorieën iets omlaag
+  if(a.weeklyRate<-0.5){
+    // Te snel: verhoog met 150 kcal ter bescherming spiermassa
+    S.calAdj=Math.min(S.calAdj+150,400);
+  } else if(a.weeklyRate>-0.1){
+    // Te weinig: verlaag met 100 kcal
+    S.calAdj=Math.max(S.calAdj-100,-300);
+  }
+  // Sweet spot: 0.25–0.5 kg/week = niets aanpassen
+  persist();
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────
+function renderDashboard(){
+  const now=new Date();
+  const pw=getCurWeek();
+  const dts=Math.ceil((START_DATE-now)/864e5);
+  let phaseName='CUT PROGRAM', phaseSub='Start: 8 juni 2026 · 15 Weken', wLabel='VOOR START', wNum='—';
+  if(pw){
+    const ph=getPhaseForWeek(pw);
+    phaseName=ph.name; wNum=`W${pw}`; wLabel=ph.name;
+    const ws=getWSD(pw), we=new Date(ws); we.setDate(we.getDate()+6);
+    phaseSub=`${fmt(ws)} – ${fmt(we)} · Week ${pw} van ${PROGRAM_WEEKS}`;
+  }
+  document.getElementById('dash-phase-name').textContent=phaseName;
+  document.getElementById('dash-phase-sub').textContent=phaseSub;
+  document.getElementById('dash-week-num').textContent=wNum;
+  document.getElementById('dash-phase-label').textContent=wLabel;
+  document.getElementById('dash-days-info').textContent=dts>0?`${dts} dagen tot start`:(pw?`Week ${pw}/${PROGRAM_WEEKS} · ${Math.round((pw/PROGRAM_WEEKS)*100)}% voltooid`:'');
+
+  const bar=document.getElementById('phase-bar'); bar.innerHTML='';
+  PHASES.forEach(p=>{ const s=document.createElement('div'); s.className='phase-seg'; s.style.flex=p.weeks.length; s.style.background=p.color; s.style.opacity=(pw&&p.weeks.includes(pw))?.9:.25; bar.appendChild(s); });
+
+  autoAdjust();
+  const cal=getAdaptedCal();
+  document.getElementById('d-kcal').textContent=cal||'—';
+  document.getElementById('d-protein').textContent=S.setup?`${S.setup.protein}g`:'—';
+  const sw=[...S.weights].sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const cur=sw.length?sw[sw.length-1].value:null, fi=sw.length?sw[0].value:null;
+  document.getElementById('d-weight').textContent=cur?`${cur} kg`:'—';
+  if(cur&&fi){ const d=(cur-fi).toFixed(1); const el=document.getElementById('d-change'); el.textContent=`${d>0?'+':''}${d} kg`; el.className='stat-val '+(d<0?'green':'blue'); }
+
+  // Show phase calorie schedule info
+  const pw2=getCurWeek();
+  const phaseCal=getPhaseCalories();
+  const kcalEl=document.getElementById('d-kcal');
+  if(kcalEl){ kcalEl.textContent=getAdaptedCal(); }
+
+  renderAdvice();
+  document.getElementById('today-date-label').textContent=fmtFull(now);
+  renderTodayCard();
+}
+
+function renderAdvice(){
+  const wrap=document.getElementById('advice-box-wrap');
+  const a=analyzeProgress();
+  if(!a){
+    wrap.innerHTML=`<div class="advice-box info"><div class="advice-icon">💡</div><div><div class="advice-title">${S.weights.length===0?'Begin met wegen!':'Meer data nodig'}</div><div class="advice-text">${S.weights.length===0?'Vul je gewicht in via het veld hierboven.':'Minimaal 3 wegingen nodig voor analyse.'}</div></div></div>`;
+    return;
+  }
+  const adj=S.calAdj!==0?` (aanpassing: ${S.calAdj>0?'+':''}${S.calAdj} kcal)`:'';
+  let cl,ic,ti,tx;
+  if(a.weeklyRate<-0.5){
+    cl='warn';ic='💪';
+    ti='Te snel verlies – calorieën verhoogd voor spierbehoud';
+    tx=`Verlies: ${Math.abs(a.weeklyRate).toFixed(2)} kg/week → te snel! Boven 0,5 kg/week riskeer je spierverlies. +150 kcal toegevoegd.${adj}`;
+  } else if(a.weeklyRate>-0.1){
+    cl='danger';ic='⚠️';
+    ti='Gewicht daalt nauwelijks – calorieën verlaagd';
+    tx=`Trend: ${Math.abs(a.weeklyRate).toFixed(2)} kg/week → te weinig. Target −100 kcal.${adj}`;
+  } else {
+    cl='good';ic='✅';
+    ti='Perfecte cut! Spiermassa behouden ✓';
+    tx=`Verlies: ${Math.abs(a.weeklyRate).toFixed(2)} kg/week – precies goed (doel: 0,25–0,5 kg/week). Calorieën gelijk.${adj}`;
+  }
+  wrap.innerHTML=`<div class="advice-box ${cl}"><div class="advice-icon">${ic}</div><div><div class="advice-title">${ti}</div><div class="advice-text">${tx}</div></div></div>`;
+}
+
+function renderTodayCard(){
+  const now=new Date(); const di=(now.getDay()+6)%7; const pw=getCurWeek()||1;
+  const dc=DAYS_CONFIG[di]; const wo=generateWorkout(dc.type,pw); const m=getMealForDay(pw,di);
+  document.getElementById('today-workout-summary').innerHTML=`
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+      <span style="font-size:18px;">${dc.icon}</span><strong>${dc.label}</strong>
+      <span class="day-type-badge ${dc.badge}">${dc.label}</span>
+    </div>
+    <ul style="list-style:none;margin-bottom:14px;">
+      ${wo.filter(e=>!e.name.startsWith('──')&&!e.name.startsWith('🏁')).slice(0,4).map(e=>{const d=e.det||e.detail||'';return`<li style="font-size:12px;color:var(--text2);padding:5px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:8px;"><span>${e.name}</span>${d.trim()?`<span style="font-family:var(--fm);font-size:10px;color:var(--text3);flex-shrink:0;">${d}</span>`:''}</li>`}).join('')}
+    </ul>`;
+  document.getElementById('today-meal-summary').innerHTML=`
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:8px;">Vandaag eten</div>
+    ${m.preWO?`<div class="meal-item" style="border:1px solid rgba(232,255,71,.25);background:rgba(232,255,71,.05);margin-bottom:5px;"><span class="meal-name">⚡ Pre-workout: ${m.preWO.name}</span><span class="meal-kcal">${m.preWO.kcal} kcal</span></div>`:''}
+    <div class="meal-item" style="margin-bottom:5px;"><span class="meal-name">🌙 ${m.brkfast.name}</span><span class="meal-kcal">${m.brkfast.kcal} kcal</span></div>
+    <div class="meal-item" style="margin-bottom:5px;"><span class="meal-name">☀️ ${m.lunch.name}</span><span class="meal-kcal">${m.lunch.kcal} kcal</span></div>
+    <div class="meal-item"><span class="meal-name">🍽️ ${m.dinner.name}</span><span class="meal-kcal">${m.dinner.kcal} kcal</span></div>
+    <div style="margin-top:8px;text-align:right;font-family:var(--fm);font-size:11px;color:var(--accent);">~${m.tot.kcal} kcal · ${m.tot.p}g eiwit</div>`;
+}
+
+function quickAddWeight(){
+  const v=parseFloat(document.getElementById('quick-weight').value); if(!v) return;
+  const t=iso(new Date());
+  S.weights=S.weights.filter(w=>w.date!==t); S.weights.push({date:t,value:v});
+  S.weights.sort((a,b)=>new Date(a.date)-new Date(b.date));
+  persist(); document.getElementById('quick-weight-result').textContent=`✓ ${v} kg opgeslagen (${t})`; document.getElementById('quick-weight').value=''; renderDashboard();
+}
+
+// ── TRAINING ──────────────────────────────────────────────
+function renderTraining(){
+  const de=document.getElementById('week-dots'); de.innerHTML='';
+  for(let w=1;w<=PROGRAM_WEEKS;w++){
+    const ph=getPhaseForWeek(w); const b=document.createElement('button');
+    b.className='week-dot'+(w===S.curWeek?' active':'')+(ph.name==='DELOAD'?' deload':'');
+    b.textContent=w; b.onclick=()=>{S.curWeek=w;renderTraining();}; de.appendChild(b);
+  }
+  const w=S.curWeek, ph=getPhaseForWeek(w), ws=getWSD(w), we=new Date(ws); we.setDate(we.getDate()+6);
+  document.getElementById('train-week-title').textContent=`Week ${w}`;
+  document.getElementById('train-week-dates').textContent=`${fmt(ws)} – ${fmt(we)}`;
+  document.getElementById('train-phase-pill').innerHTML=`<span class="phase-pill phase-${ph.label}">${ph.name}</span>`;
+
+  const grid=document.getElementById('day-grid'); grid.innerHTML='';
+  DAYS_CONFIG.forEach((day,idx)=>{
+    const dd=new Date(ws); dd.setDate(dd.getDate()+idx);
+    const dk=iso(dd); const isDone=!!S.done[dk]; const isRest=day.type==='rest'; const isToday=iso(new Date())===dk;
+    const wo=generateWorkout(day.type,w); const isOpen=!!S.openDays[dk];
+    const card=document.createElement('div');
+    card.className=`day-card${isDone?' done':''}${isRest?' rest':''}${isToday?' today':''}`;
+    card.innerHTML=`
+      <div class="day-header" onclick="toggleDay('${dk}',this)">
+        <div class="day-name">${day.icon} ${day.name}<span class="day-type-badge ${day.badge}">${day.label}</span>${isToday?'<span style="font-size:9px;color:var(--accent);">● NU</span>':''}</div>
+        <div style="display:flex;align-items:center;gap:5px;">
+          <span style="font-size:10px;color:var(--text3);">${fmt(dd)}</span>
+          ${!isRest?`<button class="done-btn ${isDone?'done':''}" onclick="event.stopPropagation();toggleDone('${dk}')">${isDone?'✓ Gedaan':'Done'}</button>`:''}
+          <svg class="toggle-icon ${isOpen?'open':''}" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+      <div class="day-body ${isOpen?'open':''}">
+        <ul class="exercise-list">${wo.map(e=>{const isHeader=e.name.startsWith('──')||e.name.startsWith('🏁');const d=e.det||e.detail||'';return`<li class="exercise-item" style="${isHeader?'border-top:1px solid rgba(255,107,53,.3);margin-top:6px;padding-top:10px;':''}"><span class="exercise-name" style="${isHeader?'color:var(--accent2);font-size:10px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;':''}">${e.name}</span>${d.trim()?`<span class="exercise-detail">${d}</span>`:''}</li>`}).join('')}</ul>
+        ${!isRest?`<button class="btn btn-sm btn-ghost" style="margin-top:10px;" onclick="goLog('${dk}')">📝 Log sets</button>`:''}
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function toggleDay(dk,h){ S.openDays[dk]=!S.openDays[dk]; h.nextElementSibling.classList.toggle('open',S.openDays[dk]); h.querySelector('.toggle-icon').classList.toggle('open',S.openDays[dk]); }
+function toggleDone(dk){ S.done[dk]=!S.done[dk]; persist(); renderTraining(); }
+function goLog(dk){ document.getElementById('lb-date').value=dk; showPage('logboek'); }
+
+// ── LOGBOEK ───────────────────────────────────────────────
+const ALL_EX=[
+  'Incline Dumbbell Press','Barbell Row','Shoulder Press (DB)','Lat Pulldown',
+  'Face Pulls','Lateral Raises (DB)','Hanging Leg Raises','Ab Roller',
+  'Hip Thrust','RDL','Bulgarian Split Squat','Cable Kickback','Abductor Machine',
+  'Pull-Up','Rear Delt Fly','Upright Row','Bicep Curl','Arnold Press',
+];
+
+// Set rijen beheer – elk met eigen gewicht, reps en type
+let numSets = 3;
+const SET_TYPES = [
+  {val:'werkset',   label:'Werkset',   color:'var(--accent)'},
+  {val:'warmup',    label:'Warming-up',color:'var(--accent3)'},
+  {val:'dropset',   label:'Drop set',  color:'var(--accent4)'},
+  {val:'backoff',   label:'Back-off',  color:'var(--accent2)'},
+];
+
+function initSetRows(){
+  const wrap=document.getElementById('set-rows');
+  if(!wrap) return;
+  // Bewaar bestaande waarden
+  const saved=[];
+  for(let i=0;i<20;i++){
+    const kg=document.getElementById(`set-kg-${i}`)?.value;
+    const reps=document.getElementById(`set-reps-${i}`)?.value;
+    const type=document.getElementById(`set-type-${i}`)?.value;
+    if(kg!==undefined) saved.push({kg,reps,type});
+  }
+  wrap.innerHTML='';
+  for(let i=0;i<numSets;i++){
+    const prev=saved[i]||{};
+    const isWarmup=i===0&&numSets>1;
+    const defaultType=prev.type||(isWarmup?'warmup':'werkset');
+    const row=document.createElement('div');
+    row.style.cssText='display:grid;grid-template-columns:36px 1fr 1fr 90px 40px;gap:5px;align-items:center;';
+    row.innerHTML=`
+      <span style="font-size:10px;color:var(--text3);font-family:var(--fm);text-align:center;">${i+1}</span>
+      <input type="number" id="set-kg-${i}" placeholder="kg" step="0.5" value="${prev.kg||''}"
+        style="padding:8px 8px;font-size:14px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:var(--fb);outline:none;width:100%;"
+        oninput="updateSetBadge(${i})" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+      <input type="number" id="set-reps-${i}" placeholder="reps" min="1" max="50" value="${prev.reps||''}"
+        style="padding:8px 8px;font-size:14px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:var(--fb);outline:none;width:100%;"
+        oninput="updateSetBadge(${i})" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+      <select id="set-type-${i}"
+        style="padding:6px 4px;font-size:10px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);font-family:var(--fb);outline:none;width:100%;-webkit-appearance:none;"
+        onchange="updateSetBadge(${i})">
+        ${SET_TYPES.map(t=>`<option value="${t.val}"${defaultType===t.val?' selected':''}>${t.label}</option>`).join('')}
+      </select>
+      <span id="set-badge-${i}" style="font-size:9px;font-family:var(--fm);color:var(--text3);text-align:center;line-height:1.3;"></span>`;
+    wrap.appendChild(row);
+    setTimeout(()=>updateSetBadge(i),0);
+  }
+}
+
+function addSetRow(){ numSets=Math.min(numSets+1,10); initSetRows(); }
+function removeSetRow(){ numSets=Math.max(numSets-1,1); initSetRows(); }
+
+function updateSetBadge(i){
+  const kg=parseFloat(document.getElementById(`set-kg-${i}`)?.value)||0;
+  const r=parseInt(document.getElementById(`set-reps-${i}`)?.value)||0;
+  const type=document.getElementById(`set-type-${i}`)?.value||'werkset';
+  const badge=document.getElementById(`set-badge-${i}`);
+  if(!badge) return;
+  const typeObj=SET_TYPES.find(t=>t.val===type)||SET_TYPES[0];
+  if(kg&&r){
+    badge.innerHTML=`<span style="color:${typeObj.color}">${(kg*r).toFixed(0)}</span><br><span style="color:var(--text3);font-size:8px;">vol</span>`;
+  } else {
+    badge.innerHTML='';
+  }
+}
+
+// Compat stub
+function updateSetPreviews(){ for(let i=0;i<numSets;i++) updateSetBadge(i); }
+
+function initLogbook(){
+  const dl=document.getElementById('exercise-suggestions');
+  dl.innerHTML=ALL_EX.map(e=>`<option value="${e}">`).join('');
+  if(!document.getElementById('lb-date').value) document.getElementById('lb-date').value=iso(new Date());
+  initSetRows();
+}
+
+function saveLogEntry(){
+  const date=document.getElementById('lb-date').value;
+  const ex=document.getElementById('lb-exercise').value.trim();
+  const rpe=document.getElementById('lb-rpe').value;
+  if(!date||!ex){alert('Vul datum en oefening in.');return;}
+
+  // Lees per set: kg + reps + type
+  const setsData=[];
+  for(let i=0;i<numSets;i++){
+    const kg=parseFloat(document.getElementById(`set-kg-${i}`)?.value)||0;
+    const r=parseInt(document.getElementById(`set-reps-${i}`)?.value)||0;
+    const type=document.getElementById(`set-type-${i}`)?.value||'werkset';
+    if(kg>0&&r>0) setsData.push({kg,reps:r,type});
+  }
+  if(setsData.length===0){alert('Vul minstens 1 set in met gewicht én reps.');return;}
+
+  // Werksets voor progressie (geen warmup)
+  const werkSets=setsData.filter(s=>s.type==='werkset'||s.type==='backoff');
+  const mainKg=werkSets.length?Math.max(...werkSets.map(s=>s.kg)):setsData[0].kg;
+  const allReps=setsData.map(s=>s.reps);
+  const werkReps=werkSets.map(s=>s.reps);
+  const totalReps=allReps.reduce((a,b)=>a+b,0);
+  const totalVol=Math.round(setsData.reduce((a,s)=>a+s.kg*s.reps,0));
+  const minReps=werkReps.length?Math.min(...werkReps):Math.min(...allReps);
+  const maxReps=werkReps.length?Math.max(...werkReps):Math.max(...allReps);
+  const avgReps=werkReps.length?Math.round(werkReps.reduce((a,b)=>a+b,0)/werkReps.length):Math.round(totalReps/setsData.length);
+
+  S.log.push({
+    date,ex,rpe:rpe||'—',
+    kg:mainKg,
+    setsDetail:setsData,   // nieuw: per set kg+reps+type
+    setsData:werkReps,     // compat: reps werksets
+    sets:setsData.length,
+    reps:avgReps,minReps,maxReps,totalReps,volume:totalVol
+  });
+  persist();
+  renderLogbook();
+
+  // Reset velden
+  document.getElementById('lb-exercise').value='';
+  document.getElementById('lb-rpe').value='';
+  initSetRows();
+}
+
+function filterLog(ex){ S.logFilter=ex; S.progEx=ex; renderLogbook(); }
+
+function renderLogbook(){
+  const fl=S.logFilter;
+  const uniq=[...new Set(S.log.map(e=>e.ex))];
+
+  // Filter buttons
+  const filterWrap=document.getElementById('ex-filter-btns');
+  if(filterWrap){
+    filterWrap.innerHTML='<button class="btn btn-sm '+(fl===''?'':'btn-ghost')+'" onclick="filterLog(\'\')">Alles</button>'
+      +uniq.map(ex=>`<button class="btn btn-sm ${ex===fl?'':'btn-ghost'}" onclick="filterLog('${ex.replace(/'/g,"\'")}')">${ex}</button>`).join('');
+  }
+
+  document.getElementById('lb-filter-label').textContent=fl?`– ${fl}`:'– Alles';
+  const filt=fl?S.log.filter(e=>e.ex.toLowerCase().includes(fl.toLowerCase())):S.log;
+  const sorted=[...filt].sort((a,b)=>new Date(b.date)-new Date(a.date));
+
+  // Sessie geschiedenis – gegroepeerd per datum + oefening
+  const hEl=document.getElementById('lb-history');
+  if(sorted.length===0){
+    hEl.innerHTML='<div class="empty-state"><span>📊</span>Log je eerste training!</div>';
+  } else {
+    hEl.innerHTML=sorted.map(e=>{
+      // Per-set badges: gebruik setsDetail (nieuw) of fallback op setsData (oud)
+      let setsHtml='';
+      if(e.setsDetail&&e.setsDetail.length){
+        setsHtml=e.setsDetail.map((s,i)=>{
+          const typeObj=SET_TYPES.find(t=>t.val===s.type)||SET_TYPES[0];
+          const repColor=s.reps>=10?'var(--success)':(s.reps>=8?'var(--warning)':'var(--text2)');
+          return `<div style="display:inline-flex;align-items:center;gap:5px;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:4px 10px;font-size:10px;font-family:var(--fm);">
+            <span style="color:var(--text3);">S${i+1}</span>
+            <span style="color:var(--accent);font-weight:600;">${s.kg}kg</span>
+            <span style="color:${repColor};font-weight:600;">×${s.reps}</span>
+            <span style="color:${typeObj.color};font-size:9px;">${typeObj.label}</span>
+          </div>`;
+        }).join('');
+      } else {
+        setsHtml=(e.setsData||[e.reps]).map((r,i)=>{
+          const c=r>=10?'var(--success)':(r>=8?'var(--warning)':'var(--text3)');
+          return `<div style="display:inline-flex;align-items:center;gap:4px;background:var(--surface2);border-radius:8px;padding:3px 8px;font-size:10px;font-family:var(--fm);">
+            <span style="color:var(--text3);">S${i+1}</span>
+            <span style="color:var(--accent);">${e.kg}kg</span>
+            <span style="color:${c};font-weight:600;">×${r}</span>
+          </div>`;
+        }).join('');
+      }
+      return `<div style="padding:12px 0;border-bottom:1px solid var(--border2);">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+          <div>
+            <div style="font-weight:500;font-size:13px;color:var(--text);">${e.ex}</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:2px;font-family:var(--fm);">${e.date} · RPE ${e.rpe} · <span style="color:var(--accent2);">${e.volume} vol</span></div>
+          </div>
+          <div style="text-align:right;font-family:var(--fm);font-size:10px;color:var(--text3);">
+            ${e.totalReps||e.reps} reps
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:4px;">${setsHtml}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // ── PROGRESSIEVE OVERLOAD ADVIES ──
+  const poMap={};
+  S.log.forEach(e=>{
+    if(!poMap[e.ex]) poMap[e.ex]=[];
+    poMap[e.ex].push(e);
+  });
+
+  const poEl=document.getElementById('po-suggestions');
+  const suggestions=[];
+
+  Object.keys(poMap).forEach(ex=>{
+    const entries=poMap[ex].sort((a,b)=>new Date(a.date)-new Date(b.date));
+    if(entries.length<2) return;
+    const last=entries[entries.length-1];
+    const prev=entries[entries.length-2];
+
+    // Gebruik setsDetail (werksets) voor echte progressie analyse
+    const lastDetail=last.setsDetail?last.setsDetail.filter(s=>s.type==='werkset'||s.type==='backoff'):null;
+    const lastSetsReps=lastDetail&&lastDetail.length?lastDetail.map(s=>s.reps):(last.setsData||[last.reps]);
+    const lastMaxKg=lastDetail&&lastDetail.length?Math.max(...lastDetail.map(s=>s.kg)):last.kg;
+    const prevDetail=prev.setsDetail?prev.setsDetail.filter(s=>s.type==='werkset'||s.type==='backoff'):null;
+    const prevMaxKg=prevDetail&&prevDetail.length?Math.max(...prevDetail.map(s=>s.kg)):prev.kg;
+
+    const allAbove10=lastSetsReps.every(r=>r>=10);
+    const mostAbove8=lastSetsReps.filter(r=>r>=8).length>=Math.ceil(lastSetsReps.length*0.7);
+    const kgIncreased=lastMaxKg>prevMaxKg;
+
+    let icon,advies,kleur,detail;
+    if(allAbove10){
+      icon='🔼'; kleur='var(--success)';
+      advies=`Verhoog gewicht naar <strong>${(lastMaxKg+2.5).toFixed(1)} kg</strong>`;
+      detail=`Alle werksets ≥10 reps @ ${lastMaxKg} kg — klaar voor meer gewicht!`;
+    } else if(mostAbove8&&!allAbove10){
+      icon='↗️'; kleur='var(--warning)';
+      advies=`Meer reps, zelfde gewicht (${lastMaxKg} kg)`;
+      detail=`Werksets: ${lastSetsReps.join(', ')} reps — push naar 10 reps per set`;
+    } else if(kgIncreased){
+      icon='💪'; kleur='var(--accent)';
+      advies=`Nieuw gewicht! Bouw reps op @ ${lastMaxKg} kg`;
+      detail=`Gewicht verhoogd vs vorige sessie (${prevMaxKg}→${lastMaxKg} kg) — bouw reps op`;
+    } else {
+      icon='✓'; kleur='var(--text3)';
+      advies=`Houd ${lastMaxKg} kg, werk naar 10 reps`;
+      detail=`Werksets: ${lastSetsReps.join(', ')} reps — nog niet klaar voor gewichtsverhoging`;
+    }
+    suggestions.push({ex,icon,advies,detail,kleur,lastKg:lastMaxKg,lastSets:lastSetsReps,lastSetsDetail:last.setsDetail||null,lastDate:last.date});
+  });
+
+  if(poEl){
+    if(suggestions.length===0){
+      poEl.innerHTML='<div style="font-size:12px;color:var(--text3);font-weight:300;">Log minimaal 2 trainingen per oefening voor advies.</div>';
+    } else {
+      poEl.innerHTML=suggestions.map(p=>`
+        <div style="padding:10px 0;border-bottom:1px solid var(--border2);">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+            <span style="font-size:18px;">${p.icon}</span>
+            <div>
+              <div style="font-weight:500;font-size:13px;color:var(--text);">${p.ex}</div>
+              <div style="font-size:12px;color:${p.kleur};font-weight:400;">${p.advies}</div>
+            </div>
+          </div>
+          <div style="font-size:11px;color:var(--text3);padding-left:26px;font-weight:300;line-height:1.5;">${p.detail}</div>
+          <div style="padding-left:26px;margin-top:5px;display:flex;flex-wrap:wrap;gap:3px;">
+            ${p.lastSetsDetail?p.lastSetsDetail.map((s,i)=>{
+              const c=s.reps>=10?'var(--success)':(s.reps>=8?'var(--warning)':'var(--text3)');
+              const tObj=SET_TYPES.find(t=>t.val===s.type)||SET_TYPES[0];
+              return `<span style="font-family:var(--fm);font-size:10px;background:var(--surface2);border-radius:6px;padding:3px 8px;color:${c};">S${i+1}: <span style="color:var(--accent);">${s.kg}kg</span>×${s.reps} <span style="color:${tObj.color};font-size:8px;">${tObj.label}</span></span>`;
+            }).join(''):p.lastSets.map((r,i)=>{
+              const c=r>=10?'var(--success)':(r>=8?'var(--warning)':'var(--text3)');
+              return `<span style="font-family:var(--fm);font-size:10px;background:var(--surface2);border-radius:6px;padding:2px 7px;color:${c};">S${i+1}: ${p.lastKg}kg×${r}</span>`;
+            }).join('')}
+          </div>
+        </div>`).join('');
+    }
+  }
+
+  // PR tabel
+  const prMap={};
+  S.log.forEach(e=>{if(!prMap[e.ex]||e.kg>prMap[e.ex].kg) prMap[e.ex]=e;});
+  const pk=Object.keys(prMap);
+  const prEl=document.getElementById('pr-table');
+  prEl.innerHTML=pk.length===0
+    ?'<div class="empty-state"><span>🏋️</span>Nog geen sets.</div>'
+    :`<div style="overflow-x:auto;"><table class="log-table">
+      <thead><tr><th>Oefening</th><th>PR</th><th>Sets</th><th>Datum</th></tr></thead>
+      <tbody>${pk.map(k=>{
+        const e=prMap[k];
+        const sd=e.setsData||[e.reps];
+        return `<tr>
+          <td>${k}</td>
+          <td class="pr">${e.kg} kg</td>
+          <td style="font-family:var(--fm);font-size:11px;color:var(--text2);">${sd.join(' · ')} reps</td>
+          <td style="color:var(--text3);font-family:var(--fm);font-size:11px;">${e.date}</td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table></div>`;
+
+  // Grafiek knoppen
+  document.getElementById('prog-btns').innerHTML=uniq.map(ex=>`<button class="btn btn-sm ${ex===S.progEx?'':'btn-ghost'}" onclick="setProg('${ex.replace(/'/g,"\'")}')">${ex}</button>`).join('');
+  renderProgChart();
+}
+
+function setProg(ex){ S.progEx=ex; renderLogbook(); }
+
+function renderProgChart(){
+  const ex=S.progEx; const ctx=document.getElementById('progress-chart').getContext('2d');
+  if(S.pChart){S.pChart.destroy();S.pChart=null;}
+  document.getElementById('prog-exercise-label').textContent=ex?`– ${ex}`:'';
+  if(!ex){ctx.clearRect(0,0,500,200);return;}
+  const data=S.log.filter(e=>e.ex===ex).sort((a,b)=>new Date(a.date)-new Date(b.date));
+  if(data.length<2){ctx.clearRect(0,0,500,200);ctx.fillStyle='#5a5a72';ctx.font='13px DM Sans';ctx.textAlign='center';ctx.fillText('Minimaal 2 entries nodig',250,100);return;}
+  S.pChart=new Chart(ctx,{type:'line',data:{labels:data.map(d=>d.date),datasets:[
+    {label:'Gewicht (kg)',data:data.map(d=>d.kg),borderColor:'#c97b84',backgroundColor:'rgba(201,123,132,.08)',pointBackgroundColor:'#c97b84',pointRadius:5,tension:.3,fill:true},
+    {label:'Max reps',data:data.map(d=>d.maxReps||d.reps),borderColor:'#8fa8a0',backgroundColor:'rgba(143,168,160,.06)',pointBackgroundColor:'#8fa8a0',pointRadius:4,tension:.3,yAxisID:'y2'},
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9090a8',font:{family:'Jost',size:11}}},tooltip:{backgroundColor:'rgba(253,248,245,.98)',borderColor:'rgba(232,216,208,.8)',borderWidth:1,titleColor:'#2d1f1a',bodyColor:'#8a6d66'}},scales:{x:{ticks:{color:'#c4a8a2',font:{family:'Jost',size:9}},grid:{color:'rgba(232,216,208,.5)'}},y:{ticks:{color:'#a88e89',font:{family:'Jost',size:10}},grid:{color:'rgba(232,216,208,.5)'},title:{display:true,text:'KG',color:'#5a5a72',font:{family:'Jost',size:10}}},y2:{ticks:{color:'#d4956a',font:{family:'Jost',size:9}},grid:{display:false},position:'right',title:{display:true,text:'Max reps',color:'#8fa8a0',font:{family:'Jost',size:10}}}}}});
+}
+
+// ── VOEDING ───────────────────────────────────────────────
+function renderVoeding(){
+  const w=S.mealWeek, ws=getWSD(w), we=new Date(ws); we.setDate(we.getDate()+6);
+  document.getElementById('meal-week-title').textContent=`Week ${w}`;
+  document.getElementById('meal-week-dates').textContent=`${fmt(ws)} – ${fmt(we)}`;
+  const de=document.getElementById('meal-week-dots'); de.innerHTML='';
+  for(let wk=1;wk<=PROGRAM_WEEKS;wk++){const b=document.createElement('button');b.className='week-dot'+(wk===w?' active':'');b.textContent=wk;b.onclick=()=>{S.mealWeek=wk;renderVoeding();};de.appendChild(b);}
+  const nav=document.getElementById('meal-day-nav'); nav.innerHTML='';
+  DAYS_CONFIG.forEach((d,i)=>{const b=document.createElement('button');b.className=`btn btn-sm ${i===S.mealDay?'':'btn-ghost'}`;b.textContent=d.name.slice(0,2);b.onclick=()=>{S.mealDay=i;renderVoeding();};nav.appendChild(b);});
+  const dc=DAYS_CONFIG[S.mealDay], dd=new Date(ws); dd.setDate(dd.getDate()+S.mealDay);
+  const m=getMealForDay(w,S.mealDay);
+  const target=getAdaptedCal();
+  const diff=m.tot.kcal-target; const dtxt=diff>0?`+${diff}`:`${diff}`; const dc2=Math.abs(diff)<120?'var(--success)':'var(--warning)';
+  document.getElementById('meal-content').innerHTML=`
+    <div class="card">
+      <div class="card-title">${dc.icon} ${dc.name} · ${fmt(dd)}</div>
+      ${m.preWO?`<div class="meal-section"><div class="meal-section-title">⚡ Pre-Workout</div><div class="meal-item" style="border:1px solid rgba(232,255,71,.25);background:rgba(232,255,71,.05);"><div><div class="meal-name">${m.preWO.name}</div><div style="font-size:10px;color:var(--accent);margin-top:2px;">45–60 min voor training · koolhydraten voor energie</div></div><span class="meal-kcal">${m.preWO.kcal} kcal<br>${m.preWO.c}g kh</span></div></div>`:''}
+      <div class="meal-section"><div class="meal-section-title">🌙 Ontbijt</div><div class="meal-item"><div><div class="meal-name">${m.brkfast.name}</div><div style="font-size:10px;color:var(--text3);margin-top:3px;line-height:1.5;">${m.brkfast.items.join(' · ')}</div></div><span class="meal-kcal">${m.brkfast.kcal} kcal<br>${m.brkfast.p}g eiwit</span></div></div>
+      <div class="meal-section"><div class="meal-section-title">☀️ Lunch</div><div class="meal-item"><span class="meal-name">${m.lunch.name}</span><span class="meal-kcal">${m.lunch.kcal} kcal<br>${m.lunch.p}g eiwit</span></div></div>
+      <div class="meal-section"><div class="meal-section-title">🍽️ Diner</div><div class="meal-item"><span class="meal-name">${m.dinner.name}</span><span class="meal-kcal">${m.dinner.kcal} kcal<br>${m.dinner.p}g eiwit</span></div></div>
+      <div class="meal-section"><div class="meal-section-title">🍎 Snacks</div><div class="meal-item"><span class="meal-name">${m.s1.name}</span><span class="meal-kcal">${m.s1.kcal} kcal</span></div><div class="meal-item"><span class="meal-name">${m.s2.name}</span><span class="meal-kcal">${m.s2.kcal} kcal</span></div></div>
+      <div style="border-top:1px solid var(--border);padding-top:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><span style="font-weight:600;">Totaal</span><span style="font-family:var(--fm);font-size:13px;">${m.tot.kcal} kcal <span style="color:${dc2};font-size:11px;">(${dtxt} vs target)</span></span></div>
+        <div class="macro-row"><div class="macro-pill"><div class="macro-val p">${m.tot.p}g</div><div class="macro-lbl">Eiwit</div></div><div class="macro-pill"><div class="macro-val c">${m.tot.c}g</div><div class="macro-lbl">Koolhydraten</div></div><div class="macro-pill"><div class="macro-val f">${m.tot.f}g</div><div class="macro-lbl">Vetten</div></div></div>
+        ${S.setup?`<div style="margin-top:10px;"><div class="prog-bar-label"><span>Eiwit vs doel (${S.setup.protein}g)</span><span>${m.tot.p}g</span></div><div class="prog-bar"><div class="prog-bar-fill orange" style="width:${Math.min(100,(m.tot.p/S.setup.protein)*100)}%"></div></div></div>`:''}
+      </div>
+    </div>
+    <div class="card"><div class="card-title">🛒 Ingrediënten Diner</div><ul style="list-style:none;">${m.dinner.ingredients.map((ing,i)=>`<li class="ing-item"><div class="ing-check" id="ic${i}" onclick="togIng(${i})"></div><span>${ing}</span></li>`).join('')}</ul></div>`;
+}
+
+function togIng(i){ const e=document.getElementById('ic'+i); e.classList.toggle('checked'); e.textContent=e.classList.contains('checked')?'✓':''; }
+
+// ── GEWICHT ───────────────────────────────────────────────
+function addWeight(){
+  const v=parseFloat(document.getElementById('w-input').value), d=document.getElementById('w-date').value;
+  if(!v||!d) return;
+  S.weights=S.weights.filter(w=>w.date!==d); S.weights.push({date:d,value:v});
+  S.weights.sort((a,b)=>new Date(a.date)-new Date(b.date));
+  document.getElementById('w-input').value=''; persist(); renderWeight(); renderDashboard();
+}
+function delWeight(d){ S.weights=S.weights.filter(w=>w.date!==d); persist(); renderWeight(); renderDashboard(); }
+
+function renderWeight(){
+  document.getElementById('w-date').value=iso(new Date());
+  const s=[...S.weights].sort((a,b)=>new Date(a.date)-new Date(b.date));
+  if(!s.length){['wt-start','wt-current','wt-lost','wt-perweek'].forEach(id=>document.getElementById(id).textContent='—');}
+  else{
+    const f=s[0].value,l=s[s.length-1].value,diff=(l-f).toFixed(1);
+    const days=Math.max(1,(new Date(s[s.length-1].date)-new Date(s[0].date))/864e5);
+    document.getElementById('wt-start').textContent=`${f} kg`;
+    document.getElementById('wt-current').textContent=`${l} kg`;
+    document.getElementById('wt-lost').textContent=`${diff>0?'+':''}${diff} kg`;
+    document.getElementById('wt-perweek').textContent=`${((l-f)/days*7).toFixed(2)} kg/w`;
+  }
+  const list=document.getElementById('weight-list'); list.innerHTML='';
+  if(!s.length){list.innerHTML='<div class="empty-state"><span>⚖️</span>Nog geen wegingen.</div>';}
+  [...s].reverse().forEach((item,idx,arr)=>{
+    const prev=arr[idx+1]; const diff=prev?(item.value-prev.value).toFixed(1):null;
+    const li=document.createElement('li'); li.className='weight-item';
+    li.innerHTML=`<span class="weight-date">${item.date}</span><span class="weight-val">${item.value} kg</span>${diff!==null?`<span class="weight-diff ${diff<0?'down':'up'}">${diff>0?'+':''}${diff} kg</span>`:'<span></span>'}<button onclick="delWeight('${item.date}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px;">✕</button>`;
+    list.appendChild(li);
+  });
+  renderWChart(s);
+}
+
+function renderWChart(s){
+  const ctx=document.getElementById('weight-chart').getContext('2d');
+  if(S.wChart){S.wChart.destroy();S.wChart=null;}
+  if(s.length<2){ctx.clearRect(0,0,500,200);ctx.fillStyle='#5a5a72';ctx.font='13px DM Sans';ctx.textAlign='center';ctx.fillText('Voeg meer wegingen toe',250,100);return;}
+  const data=s.map(w=>w.value),n=data.length,xM=(n-1)/2,yM=data.reduce((a,b)=>a+b)/n;
+  let sxy=0,sxx=0; data.forEach((y,i)=>{sxy+=(i-xM)*(y-yM);sxx+=(i-xM)**2;});
+  const sl=sxy/sxx,int=yM-sl*xM;
+  S.wChart=new Chart(ctx,{type:'line',data:{labels:s.map(w=>w.date),datasets:[
+    {label:'Gewicht',data,borderColor:'#c97b84',backgroundColor:'rgba(201,123,132,.08)',pointBackgroundColor:'#c97b84',pointRadius:4,tension:.3,fill:true},
+    {label:'Trend',data:data.map((_,i)=>+(int+sl*i).toFixed(2)),borderColor:'#8fa8a0',borderDash:[5,5],pointRadius:0,fill:false},
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9090a8',font:{family:'Jost',size:11}}},tooltip:{backgroundColor:'rgba(253,248,245,.98)',borderColor:'rgba(232,216,208,.8)',borderWidth:1,titleColor:'#2d1f1a',bodyColor:'#8a6d66'}},scales:{x:{ticks:{color:'#c4a8a2',font:{family:'Jost',size:9}},grid:{color:'rgba(232,216,208,.5)'}},y:{ticks:{color:'#a88e89',font:{family:'Jost',size:10}},grid:{color:'rgba(232,216,208,.5)'}}}}});
+}
+
+// ── SETUP ─────────────────────────────────────────────────
+function saveSetup(){
+  const wt=parseFloat(document.getElementById('inp-weight').value)||68;
+  const ht=parseFloat(document.getElementById('inp-height').value);
+  const age=parseInt(document.getElementById('inp-age').value);
+  const act=parseFloat(document.getElementById('inp-activity').value);
+  const pg=parseInt(document.getElementById('inp-protein-goal').value)||130;
+  if(!ht||!age){alert('Vul lengte en leeftijd in.');return;}
+  const c=calcCals(wt,ht,age,act,pg);
+  S.setup={weight:wt,height:ht,age,activity:act,protein:pg,calories:2100,...c};
+  S.calAdj=0; persist();
+  document.getElementById('res-bmr').textContent=c.bmr;
+  document.getElementById('res-tdee').textContent=c.tdee;
+  document.getElementById('res-cut').textContent='2100 → 1700';
+  document.getElementById('res-protein').textContent=`${pg}g`;
+  document.getElementById('res-p').textContent=`${pg}g`;
+  document.getElementById('res-c').textContent=`${c.carbs}g`;
+  document.getElementById('res-f').textContent=`${c.fats}g`;
+  document.getElementById('setup-result').style.display='block';
+  renderDashboard();
+}
+
+function loadSetupFields(){
+  if(!S.setup) return;
+  document.getElementById('inp-weight').value=S.setup.weight||68;
+  document.getElementById('inp-height').value=S.setup.height||'';
+  document.getElementById('inp-age').value=S.setup.age||'';
+  document.getElementById('inp-activity').value=S.setup.activity||1.55;
+  document.getElementById('inp-protein-goal').value=S.setup.protein||130;
+  if(S.setup.bmr){
+    document.getElementById('res-bmr').textContent=S.setup.bmr;
+    document.getElementById('res-tdee').textContent=S.setup.tdee;
+    document.getElementById('res-cut').textContent='2100 → 1700';
+    document.getElementById('res-protein').textContent=`${S.setup.protein}g`;
+    document.getElementById('res-p').textContent=`${S.setup.protein}g`;
+    document.getElementById('res-c').textContent=`${S.setup.carbs}g`;
+    document.getElementById('res-f').textContent=`${S.setup.fats}g`;
+    document.getElementById('setup-result').style.display='block';
+  }
+}
+
+// ── DOWNLOAD / EXPORT ─────────────────────────────────────
+function downloadApp(){
+  const html=document.documentElement.outerHTML;
+  const blob=new Blob([html],{type:'text/html'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='cutpro-app.html'; a.click(); URL.revokeObjectURL(a.href);
+}
+function exportData(){
+  const blob=new Blob([JSON.stringify({setup:S.setup,weights:S.weights,done:S.done,log:S.log,calAdj:S.calAdj},null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`cutpro-data-${iso(new Date())}.json`; a.click();
+}
+function importData(){
+  const inp=document.createElement('input'); inp.type='file'; inp.accept='.json';
+  inp.onchange=e=>{const f=e.target.files[0];const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(d.weights)S.weights=d.weights;if(d.done)S.done=d.done;if(d.setup)S.setup=d.setup;if(d.log)S.log=d.log;if(d.calAdj!==undefined)S.calAdj=d.calAdj;persist();renderDashboard();alert('Data geïmporteerd!');}catch{alert('Ongeldig bestand.');}};r.readAsText(f);};
+  inp.click();
+}
+function resetAll(){ if(!confirm('Alles wissen?')) return; localStorage.clear(); location.reload(); }
+
+// ── NAVIGATION ────────────────────────────────────────────
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(`page-${name}`).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>{if(b.getAttribute('onclick').includes(`'${name}'`))b.classList.add('active');});
+  if(name==='dashboard') renderDashboard();
+  else if(name==='training'){S.curWeek=getCurWeek()||1;renderTraining();}
+  else if(name==='logboek'){initLogbook();initSetRows();renderLogbook();}
+  else if(name==='voeding'){S.mealWeek=getCurWeek()||1;S.mealDay=0;renderVoeding();}
+  else if(name==='gewicht') renderWeight();
+  else if(name==='setup') loadSetupFields();
+}
+
+// ── INIT ──────────────────────────────────────────────────
+(function(){
+  document.getElementById('w-date').value=iso(new Date());
+  document.getElementById('last-saved').textContent=localStorage.getItem('cp_setup')?'Eerder opgeslagen':'Nieuw';
+  renderDashboard();
+  initLogbook();
+})();
+</script>
+</body>
+</html>
